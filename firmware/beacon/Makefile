@@ -7,6 +7,7 @@
 
 MCU = attiny45
 F_CPU = 8000000UL
+ID = 0x000000
 FORMAT = ihex
 TARGET = main
 SRC = $(TARGET).c
@@ -29,7 +30,7 @@ DEBUG = stabs
 CSTANDARD = -std=gnu99
 
 # Place -D or -U options here
-CDEFS = -DF_CPU=$(F_CPU)
+CDEFS = -DF_CPU=$(F_CPU) -DID=$(ID)
 
 # Place -I options here
 CINCS =

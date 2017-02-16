@@ -1,4 +1,5 @@
 *.eep
 *.elf
+*.gch
 *.hex
 *.o

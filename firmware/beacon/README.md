@@ -14,4 +14,14 @@ $ avrdude -p t45 -c avrisp2 -U lfuse:w:0xe2:m -U hfuse:w:0xdf:m -U efuse:w:0xff:
 ```
 
 ## Building
-Run `make all` to compile the firmware and `make program` to flash it.
+Build the firmware into an Intel hex file
+```sh
+$ make clean
+$ make all ID=0xaNewID
+```
+
+## Flashing
+Flash the Intel hex file using avrdude
+```sh
+$ make program
+```
