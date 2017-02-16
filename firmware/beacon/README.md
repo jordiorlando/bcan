@@ -7,10 +7,11 @@ This firmware is responsible for continuously broadcasting a unique ID via a mod
 - avr-binutils
 - avrdude
 
-## Burn fuses
-Calculate fuses using the [fuse calculator](http://www.engbedded.com/fusecalc/) to not divide internal oscillator by 8.
+## One-Time Setup
+Burn fuses to not divide the internal oscillator by 8.
+Values obtained via [fuse calculator](http://www.engbedded.com/fusecalc/).
 ```sh
-$ avrdude -p t45 -c avrisp2 -U lfuse:w:0xe2:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
+$ make fuses
 ```
 
 ## Building

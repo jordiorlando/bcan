@@ -89,6 +89,7 @@ AVRDUDE_PROGRAMMER = avrisp2
 
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
+AVRDUDE_WRITE_FUSES = -U lfuse:w:0xe2:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
 
 
 # Uncomment the following if you want avrdude's erase cycle counter.
@@ -141,6 +142,10 @@ eep: $(TARGET).eep
 lss: $(TARGET).lss
 sym: $(TARGET).sym
 
+
+# Burn the fuses.
+fuses:
+	$(AVRDUDE) $(AVRDUDE_BASIC) $(AVRDUDE_WRITE_FUSES)
 
 # Program the device.
 program: $(TARGET).hex $(TARGET).eep
