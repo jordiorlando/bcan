@@ -47,8 +47,8 @@ int main(void) {
     mark(16);
     space(8);
 
-    // 3-byte unique ID
-    for (uint8_t i = 0; i < 24; i++) {
+    // Transmit the unique ID
+    for (uint8_t i = 0; i < LENGTH; i++) {
       // Send a mark for 562.5us and a space for 562.5us
       mark(1);
       space(1);
