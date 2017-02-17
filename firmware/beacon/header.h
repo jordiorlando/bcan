@@ -7,7 +7,6 @@
 
 #define LED_PIN 1
 #define CARRIER 38000
-#define US_MAX  96
 #define PULSE   562.5
 
 void mark(uint8_t n);

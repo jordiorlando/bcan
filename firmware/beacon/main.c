@@ -86,11 +86,8 @@ void space(uint8_t n) {
 // Delay for some multiple of 562.5us
 void delay(uint8_t n) {
   for (uint8_t i = 0; i < n; i++) {
-    _delay_us(US_MAX);
-    _delay_us(US_MAX);
-    _delay_us(US_MAX);
-    _delay_us(US_MAX);
-    _delay_us(US_MAX);
-    _delay_us(82.5);
+    for (uint8_t j = 0; j < 6; j++) {
+      _delay_us(PULSE / 6);
+    }
   }
 }
