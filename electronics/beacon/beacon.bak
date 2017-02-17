@@ -147,21 +147,10 @@ L C C?
 U 1 1 5893B026
 P 3000 3950
 F 0 "C?" H 3025 4050 50  0000 L CNN
-F 1 "C" H 3025 3850 50  0000 L CNN
+F 1 "1uF" H 3025 3850 50  0000 L CNN
 F 2 "" H 3038 3800 50  0000 C CNN
 F 3 "" H 3000 3950 50  0000 C CNN
 	1    3000 3950
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C?
-U 1 1 5893B075
-P 4100 3950
-F 0 "C?" H 4125 4050 50  0000 L CNN
-F 1 "C" H 4125 3850 50  0000 L CNN
-F 2 "" H 4138 3800 50  0000 C CNN
-F 3 "" H 4100 3950 50  0000 C CNN
-	1    4100 3950
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -264,20 +253,14 @@ F 3 "" H 7650 1500 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2500 3600 3000 3600
+	2500 3600 3200 3600
 Wire Wire Line
-	3000 3600 3200 3600
-Wire Wire Line
-	3000 3500 3000 3600
-Wire Wire Line
-	3000 3600 3000 3800
+	3000 3500 3000 3800
 Connection ~ 3000 3600
 Wire Wire Line
 	4000 3600 4100 3600
 Wire Wire Line
-	4100 3500 4100 3600
-Wire Wire Line
-	4100 3600 4100 3800
+	4100 3500 4100 3800
 Wire Wire Line
 	9000 4200 9100 4200
 Wire Wire Line
@@ -290,13 +273,7 @@ Connection ~ 4100 3600
 Wire Wire Line
 	2500 4200 2500 4300
 Wire Wire Line
-	2500 4300 3000 4300
-Wire Wire Line
-	3000 4300 3300 4300
-Wire Wire Line
-	3300 4300 3600 4300
-Wire Wire Line
-	3600 4300 4100 4300
+	2500 4300 4100 4300
 Wire Wire Line
 	3000 4300 3000 4100
 Wire Wire Line
@@ -315,9 +292,7 @@ Wire Wire Line
 Wire Wire Line
 	5000 3100 5000 3000
 Wire Wire Line
-	5000 3000 5100 3000
-Wire Wire Line
-	5100 3000 5200 3000
+	5000 3000 5200 3000
 Wire Wire Line
 	5200 3000 5200 3100
 Wire Wire Line
@@ -326,9 +301,7 @@ Connection ~ 5100 3000
 Wire Wire Line
 	5100 2600 5100 2500
 Wire Wire Line
-	5000 3500 5100 3500
-Wire Wire Line
-	5100 3500 5200 3500
+	5000 3500 5200 3500
 Wire Wire Line
 	5100 3500 5100 3600
 Connection ~ 5100 3500
@@ -400,4 +373,27 @@ Text Label 6100 3800 0    60   ~ 0
 MISO
 Text Label 6100 4200 0    60   ~ 0
 ~RST
+$Comp
+L CP C?
+U 1 1 5893FF34
+P 4100 3950
+F 0 "C?" H 4125 4050 50  0000 L CNN
+F 1 "47uF" H 4125 3850 50  0000 L CNN
+F 2 "" H 4138 3800 50  0000 C CNN
+F 3 "" H 4100 3950 50  0000 C CNN
+	1    4100 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2800 3900 2800 4400
+Wire Wire Line
+	2800 4400 2000 4400
+Wire Wire Line
+	2200 3900 2000 3900
+Text Label 2000 3900 0    60   ~ 0
+R1
+Text Label 2000 4400 0    60   ~ 0
+R2
+Text Notes 5300 3200 0    60   ~ 0
+unpopulated
 $EndSCHEMATC

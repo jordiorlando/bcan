@@ -252,93 +252,6 @@ F 3 "" H 7650 1500 50  0000 C CNN
 	1    7650 2700
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2500 3600 3000 3600
-Wire Wire Line
-	3000 3600 3200 3600
-Wire Wire Line
-	3000 3500 3000 3600
-Wire Wire Line
-	3000 3600 3000 3800
-Connection ~ 3000 3600
-Wire Wire Line
-	4000 3600 4100 3600
-Wire Wire Line
-	4100 3500 4100 3600
-Wire Wire Line
-	4100 3600 4100 3800
-Wire Wire Line
-	9000 4200 9100 4200
-Wire Wire Line
-	9100 4200 9100 4300
-Wire Wire Line
-	9000 3700 9100 3700
-Wire Wire Line
-	9100 3700 9100 3600
-Connection ~ 4100 3600
-Wire Wire Line
-	2500 4200 2500 4300
-Wire Wire Line
-	2500 4300 3000 4300
-Wire Wire Line
-	3000 4300 3300 4300
-Wire Wire Line
-	3300 4300 3600 4300
-Wire Wire Line
-	3600 4300 4100 4300
-Wire Wire Line
-	3000 4300 3000 4100
-Wire Wire Line
-	3600 4300 3600 4000
-Connection ~ 3000 4300
-Wire Wire Line
-	4100 4300 4100 4100
-Connection ~ 3600 4300
-Wire Wire Line
-	3300 4400 3300 4300
-Connection ~ 3300 4300
-Wire Wire Line
-	5000 3400 5000 3500
-Wire Wire Line
-	5200 3500 5200 3400
-Wire Wire Line
-	5000 3100 5000 3000
-Wire Wire Line
-	5000 3000 5100 3000
-Wire Wire Line
-	5100 3000 5200 3000
-Wire Wire Line
-	5200 3000 5200 3100
-Wire Wire Line
-	5100 3000 5100 2900
-Connection ~ 5100 3000
-Wire Wire Line
-	5100 2600 5100 2500
-Wire Wire Line
-	5000 3500 5100 3500
-Wire Wire Line
-	5100 3500 5200 3500
-Wire Wire Line
-	5100 3500 5100 3600
-Connection ~ 5100 3500
-Wire Wire Line
-	6300 3800 5700 3800
-Wire Wire Line
-	5100 4000 5100 4300
-Wire Wire Line
-	6300 4200 5900 4200
-Wire Wire Line
-	5900 4200 5900 4150
-Wire Wire Line
-	5900 3850 5900 3600
-Wire Wire Line
-	7400 2600 7200 2600
-Wire Wire Line
-	7400 2700 7200 2700
-Wire Wire Line
-	7400 2800 7200 2800
-Wire Wire Line
-	7900 2700 8100 2700
 Text Label 8100 2700 2    60   ~ 0
 MOSI
 Text Label 7200 2600 0    60   ~ 0
@@ -369,18 +282,6 @@ F 3 "" H 8000 2500 50  0000 C CNN
 	1    8000 2500
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7900 2800 8000 2800
-Wire Wire Line
-	8000 2800 8000 2900
-Wire Wire Line
-	7900 2600 8000 2600
-Wire Wire Line
-	8000 2600 8000 2500
-Wire Wire Line
-	6300 3700 6100 3700
-Wire Wire Line
-	6300 3900 6100 3900
 Text Label 6100 3900 0    60   ~ 0
 SCK
 Text Label 6100 3700 0    60   ~ 0
@@ -400,4 +301,101 @@ F 3 "" H 4100 3950 50  0000 C CNN
 	1    4100 3950
 	1    0    0    -1  
 $EndComp
+Text Label 2000 3900 0    60   ~ 0
+R1
+Text Label 2000 4400 0    60   ~ 0
+R2
+Text Notes 5400 3300 0    60   ~ 0
+unpopulated
+Wire Wire Line
+	2500 3600 3200 3600
+Wire Wire Line
+	3000 3500 3000 3800
+Connection ~ 3000 3600
+Wire Wire Line
+	4000 3600 4100 3600
+Wire Wire Line
+	4100 3500 4100 3800
+Wire Wire Line
+	9000 4200 9100 4200
+Wire Wire Line
+	9100 4200 9100 4300
+Wire Wire Line
+	9000 3700 9100 3700
+Wire Wire Line
+	9100 3700 9100 3600
+Connection ~ 4100 3600
+Wire Wire Line
+	2500 4200 2500 4300
+Wire Wire Line
+	2500 4300 4100 4300
+Wire Wire Line
+	3000 4300 3000 4100
+Wire Wire Line
+	3600 4300 3600 4000
+Connection ~ 3000 4300
+Wire Wire Line
+	4100 4300 4100 4100
+Connection ~ 3600 4300
+Wire Wire Line
+	3300 4400 3300 4300
+Connection ~ 3300 4300
+Wire Wire Line
+	5000 3400 5000 3500
+Wire Wire Line
+	5200 3500 5200 3400
+Wire Wire Line
+	5000 3100 5000 3000
+Wire Wire Line
+	5000 3000 5200 3000
+Wire Wire Line
+	5200 3000 5200 3100
+Wire Wire Line
+	5100 3000 5100 2900
+Connection ~ 5100 3000
+Wire Wire Line
+	5100 2600 5100 2500
+Wire Wire Line
+	5000 3500 5200 3500
+Wire Wire Line
+	5100 3500 5100 3600
+Connection ~ 5100 3500
+Wire Wire Line
+	6300 3800 5700 3800
+Wire Wire Line
+	5100 4000 5100 4300
+Wire Wire Line
+	6300 4200 5900 4200
+Wire Wire Line
+	5900 4200 5900 4150
+Wire Wire Line
+	5900 3850 5900 3600
+Wire Wire Line
+	7400 2600 7200 2600
+Wire Wire Line
+	7400 2700 7200 2700
+Wire Wire Line
+	7400 2800 7200 2800
+Wire Wire Line
+	7900 2700 8100 2700
+Wire Wire Line
+	7900 2800 8000 2800
+Wire Wire Line
+	8000 2800 8000 2900
+Wire Wire Line
+	7900 2600 8000 2600
+Wire Wire Line
+	8000 2600 8000 2500
+Wire Wire Line
+	6300 3700 6100 3700
+Wire Wire Line
+	6300 3900 6100 3900
+Wire Wire Line
+	2800 3900 2800 4400
+Wire Wire Line
+	2800 4400 2000 4400
+Wire Wire Line
+	2200 3900 2000 3900
+Wire Notes Line
+	5950 3300 5300 3300
 $EndSCHEMATC
