@@ -1,5 +1,7 @@
+*.d
 *.eep
 *.elf
 *.gch
 *.hex
+*.map
 *.o
