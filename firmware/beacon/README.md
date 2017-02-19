@@ -4,7 +4,6 @@ This firmware is responsible for continuously broadcasting a unique ID via a mod
 ## Prerequisites
 - avr-gcc
 - avr-libc
-- avr-binutils
 - avrdude
 
 ## One-Time Setup
