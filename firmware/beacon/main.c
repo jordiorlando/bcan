@@ -11,13 +11,22 @@
 //                                                                            //
 //============================================================================//
 
+#include <stdint.h>
+#include <avr/io.h>
+#include <util/delay.h>
 
+#define LED_PIN 1     // PB1
+#define CARRIER 38000 // Carrier frequency - 38kHz
+#define PERIOD  10    // One period = 960us = 96us * 10
 
-#include "header.h"
+void on(uint8_t n);
+void off(uint8_t n);
+void delay(uint8_t n);
+
 
 int main(void) {
   // Set PB1 as an output (function OC0B), and all others as inputs
-  DDRB = _BV(LED_PIN);
+  DDRB  =  _BV(LED_PIN);
   // Drive PB1 low, and enable pull-ups for all others (saves power)
   PORTB = ~_BV(LED_PIN);
 
@@ -44,31 +53,32 @@ int main(void) {
 
   while (1) {
     // Start of message
-    mark(16);
-    space(8);
+    on(PERIOD * 3);
+    off(PERIOD);
 
-    // Transmit the unique ID
-    for (uint8_t i = 0; i < LENGTH; i++) {
-      // Send a mark for 562.5us and a space for 562.5us
-      mark(1);
-      space(1);
-
-      // If the bit is a logical '1', send a space for 1125us more
-      if (ID & _BV(i)) {
-        delay(2);
+    // Transmit the unique ID using manchester code, MSB first
+    // 0 - rising edge
+    // 1 - falling edge
+    for (int8_t i = LENGTH - 1; i >= 0; i--) {
+      uint32_t bit = (ID >> i) & 1;
+      for (uint8_t clk = 0; clk <= 1; clk++) {
+        if (clk ^ bit) {
+          on(PERIOD / 2);
+        } else {
+          off(PERIOD / 2);
+        }
       }
     }
 
     // End of message
-    mark(1);
-    space(1);
+    off(PERIOD * 4);
   }
 
   return 0;
 }
 
 // Enable PWM on PB1
-void mark(uint8_t n) {
+void on(uint8_t n) {
   // Compare Match Output B mode
   //    COM0B = 10: clear/set OC0B on compare match (non-inverted)
   TCCR0A |= _BV(COM0B1);
@@ -76,18 +86,16 @@ void mark(uint8_t n) {
 }
 
 // Disable PWM on PB1
-void space(uint8_t n) {
+void off(uint8_t n) {
   // Compare Match Output B mode
   //    COM0B = 00: disconnect OC0B
   TCCR0A &= ~_BV(COM0B1);
   delay(n);
 }
 
-// Delay for some multiple of 562.5us
+// Delay for some multiple of 96 microseconds (max value for _delay_us())
 void delay(uint8_t n) {
   for (uint8_t i = 0; i < n; i++) {
-    for (uint8_t j = 0; j < 6; j++) {
-      _delay_us(PULSE / 6);
-    }
+    _delay_us(96);
   }
 }

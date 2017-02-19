@@ -16,7 +16,7 @@ $ make fuses
 
 ## Building
 Build the firmware into an Intel hex file.
-The ID should be a 4-digit hexadecimal number with an equal number of '0's and '1's.
+The ID should be a 4-digit hexadecimal number.
 ```sh
 $ make clean
 $ make all ID=0xdec0
