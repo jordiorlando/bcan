@@ -1,0 +1,93 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP ATTINY45-20XUR
+D TSSOP-8, 4k Flash, 256B SRAM, 256B EEPROM, Debug Wire
+K AVR 8bit Microcontroller tinyAVR
+$ENDCMP
+#
+$CMP TPS70901DBV
+D 150mA LDO Voltage Regulator, Fixed Output, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70912DBV
+D 150mA LDO Voltage Regulator, Fixed Output 1.2V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS709135DBV
+D 150mA LDO Voltage Regulator, Fixed Output 1.35V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70915DBV
+D 150mA LDO Voltage Regulator, Fixed Output 1.5V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70916DBV
+D 150mA LDO Voltage Regulator, Fixed Output 1.6V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70918DBV
+D 150mA LDO Voltage Regulator, Fixed Output 1.8V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70919DBV
+D 150mA LDO Voltage Regulator, Fixed Output 1.9V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70925DBV
+D 150mA LDO Voltage Regulator, Fixed Output 2.5V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70927DBV
+D 150mA LDO Voltage Regulator, Fixed Output 2.7V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70928DBV
+D 150mA LDO Voltage Regulator, Fixed Output 2.8V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70930DBV
+D 150mA LDO Voltage Regulator, Fixed Output 3V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70933DBV
+D 150mA LDO Voltage Regulator, Fixed Output 3.3V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70936DBV
+D 150mA LDO Voltage Regulator, Fixed Output 3.6V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70938DBV
+D 150mA LDO Voltage Regulator, Fixed Output 3.8V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70939DBV
+D 150mA LDO Voltage Regulator, Fixed Output 3.9V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70950DBV
+D 150mA LDO Voltage Regulator, Fixed Output 5V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TPS70960DBV
+D 150mA LDO Voltage Regulator, Fixed Output 6V, SOT-23-5
+K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+#End Doc Library
