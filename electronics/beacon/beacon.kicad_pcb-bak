@@ -367,7 +367,7 @@
   )
 
   (module TO_SOT_Packages_SMD:SOT-23 (layer B.Cu) (tedit 5883B105) (tstamp 58AB3396)
-    (at 155 105)
+    (at 149.5 111)
     (descr "SOT-23, Standard")
     (tags SOT-23)
     (path /589435EC)
@@ -405,7 +405,7 @@
   )
 
   (module Resistors_SMD:R_0603_HandSoldering (layer B.Cu) (tedit 58307AEF) (tstamp 58AB33A2)
-    (at 150.5 105 270)
+    (at 144.5 111 270)
     (descr "Resistor SMD 0603, hand soldering")
     (tags "resistor 0603")
     (path /5893DB94)
@@ -438,7 +438,7 @@
   )
 
   (module Resistors_SMD:R_0603_HandSoldering (layer B.Cu) (tedit 58307AEF) (tstamp 58AB33A8)
-    (at 152.5 105 90)
+    (at 146.5 111 90)
     (descr "Resistor SMD 0603, hand soldering")
     (tags "resistor 0603")
     (path /58AA1AD8)
@@ -471,7 +471,7 @@
   )
 
   (module Resistors_SMD:R_0603_HandSoldering (layer B.Cu) (tedit 58307AEF) (tstamp 58AB33AE)
-    (at 157.5 105 270)
+    (at 152.5 111 270)
     (descr "Resistor SMD 0603, hand soldering")
     (tags "resistor 0603")
     (path /5893E69D)
@@ -544,7 +544,7 @@
   )
 
   (module Resistors_SMD:R_0603_HandSoldering (layer B.Cu) (tedit 58307AEF) (tstamp 58ABA56A)
-    (at 159.5 105 90)
+    (at 154.5 111 90)
     (descr "Resistor SMD 0603, hand soldering")
     (tags "resistor 0603")
     (path /5893E362)
