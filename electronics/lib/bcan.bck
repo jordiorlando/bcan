@@ -5,6 +5,15 @@ D TSSOP-8, 4k Flash, 256B SRAM, 256B EEPROM, Debug Wire
 K AVR 8bit Microcontroller tinyAVR
 $ENDCMP
 #
+$CMP BD3575HFP-TR
+D Adjustible Voltage Regulator
+$ENDCMP
+#
+$CMP M95512-RDW6TP
+D STMicroelectronics serial EEPROM with SPI interface in 8-pin package
+K serial SPI EEPROM memory external
+$ENDCMP
+#
 $CMP TPS70901DBV
 D 150mA LDO Voltage Regulator, Fixed Output, SOT-23-5
 K 150mA LDO Regulator Fixed Positive
@@ -88,6 +97,10 @@ $ENDCMP
 $CMP TPS70960DBV
 D 150mA LDO Voltage Regulator, Fixed Output 6V, SOT-23-5
 K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP ZXMHC6A07N8TC
+D H-Bridge
 $ENDCMP
 #
 #End Doc Library
