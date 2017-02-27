@@ -1,145 +1,268 @@
-var lastMapping = 0;
+var mappings = [];
 var numMappings = 0;
 
-var mappingsList       = document.getElementById('mappings-list');
-var saveMappingsButton = document.getElementById('save-mappings-button');
-var newMappingButton   = document.getElementById('new-mapping-button');
+var mappingsList = document.getElementById('mappings-list');
+var saveButton   = document.getElementById('save-mappings-button');
+var newButton    = document.getElementById('new-mapping-button');
 
 
+function createMapping() {
+  // Create a new mapping list element
+  let index = mappings.length;
+  let mapping = document.createElement('li');
+  mapping.classList.add('list-group-item', 'row');
+  mappings[index] = {
+    node: mapping,
+    id: {
+      node: document.createElement('div'),
+      value: '',
+      valid: false
+    },
+    dot: {
+      node: document.createElement('div'),
+      value: 3,
+      valid: true
+    },
+    dir: {
+      node: document.createElement('div'),
+      value: 3,
+      valid: true
+    },
+    instruction: {
+      node: document.createElement('div'),
+      value: '',
+      valid: false
+    },
+    data: {
+      node: document.createElement('div'),
+      value: '',
+      valid: false
+    }
+  };
 
-saveMappingsButton.addEventListener('click', function(e) {
-  alert('Save downloaded file to locomotive storage device');
-});
 
-newMappingButton.addEventListener('click', function(e) {
-  let newMapping = document.createElement('li');
-  newMapping.classList.add('list-group-item', 'row');
-
-  let idInputWrapper = document.createElement('div');
-  idInputWrapper.classList.add('col-sm-2');
-  newMapping.appendChild(idInputWrapper);
-  let idInputGroup = document.createElement('div');
-  idInputGroup.classList.add('input-group');
-  idInputWrapper.appendChild(idInputGroup);
-  let idInputAddon = document.createElement('span');
-  idInputAddon.classList.add('input-group-addon');
-  idInputAddon.textContent = '0x';
-  idInputAddon.id = `mapping-${lastMapping}-id`;
-  idInputGroup.appendChild(idInputAddon);
+  // ID Input
+  mappings[index].id.node.classList.add('col-sm-2');
+  mapping.appendChild(mappings[index].id.node);
+  let idGroup = document.createElement('div');
+  idGroup.classList.add('input-group');
+  mappings[index].id.node.appendChild(idGroup);
+  let idAddon = document.createElement('span');
+  idAddon.classList.add('input-group-addon');
+  idAddon.textContent = '0x';
+  idAddon.id = `mapping-${index}-id`;
+  idGroup.appendChild(idAddon);
   let idInput = document.createElement('input');
   idInput.classList.add('form-control');
   idInput.setAttribute('type', 'text');
+  idInput.setAttribute('minlength', '4');
+  idInput.setAttribute('maxlength', '4');
+  idInput.setAttribute('pattern', '[0-9A-Fa-f]{4}');
   idInput.setAttribute('placeholder', 'Beacon ID');
-  idInput.setAttribute('aria-describedby', `mapping-${lastMapping}-id`);
-  idInputGroup.appendChild(idInput);
+  idInput.setAttribute('aria-describedby', `mapping-${index}-id`);
+  idInput.addEventListener('input', function(e) {
+    if (/^[0-9A-F]{0,4}$/i.test(e.target.value)) {
+      mappings[index].id.value = e.target.value;
+      mappings[index].id.valid = !e.target.validity.patternMismatch;
 
-  for (let title of ['Travel Direction', 'Train Direction']) {
-    let dirInputWrapper = document.createElement('div');
-    dirInputWrapper.classList.add('col-sm-auto');
-    newMapping.appendChild(dirInputWrapper);
-    let dirInputCard = document.createElement('div');
-    dirInputCard.classList.add('card');
-    dirInputWrapper.appendChild(dirInputCard);
-    let dirInputCardBlock = document.createElement('div');
-    dirInputCardBlock.classList.add('card-block', 'custom-card-block');
-    dirInputCard.appendChild(dirInputCardBlock);
-    let dirInputTitle = document.createElement('span');
-    dirInputTitle.textContent = title;
-    dirInputCardBlock.appendChild(dirInputTitle);
+      if (mappings[index].id.valid) {
+        mappings[index].id.node.classList.remove('has-danger');
+      }
+    } else {
+      e.target.value = mappings[index].id.value;
+    }
+  });
+  idGroup.appendChild(idInput);
 
-    for (let dir of ['F', 'R']) {
-      let dirInputLabel = document.createElement('label');
-      dirInputLabel.classList.add('custom-control', 'custom-checkbox', 'custom-label');
-      dirInputCardBlock.appendChild(dirInputLabel);
-      let dirInput = document.createElement('input');
-      dirInput.classList.add('custom-control-input');
-      dirInput.setAttribute('type', 'checkbox');
-      dirInput.setAttribute('checked', '');
-      dirInputLabel.appendChild(dirInput);
-      let dirInputIndicator = document.createElement('span');
-      dirInputIndicator.classList.add('custom-control-indicator');
-      dirInputLabel.appendChild(dirInputIndicator);
-      let dirInputDescription = document.createElement('span');
-      dirInputDescription.classList.add('custom-control-description');
-      dirInputDescription.textContent = dir;
-      dirInputLabel.appendChild(dirInputDescription);
+
+  // Direction Inputs
+  for (let title of [['dot', 'Travel Direction'], ['dir', 'Train Direction']]) {
+    mappings[index][title[0]].node.classList.add('col-sm-auto');
+    mapping.appendChild(mappings[index][title[0]].node);
+    let inputCard = document.createElement('div');
+    inputCard.classList.add('card');
+    mappings[index][title[0]].node.appendChild(inputCard);
+    let inputBlock = document.createElement('div');
+    inputBlock.classList.add('card-block', 'custom-card-block');
+    inputCard.appendChild(inputBlock);
+    let inputTitle = document.createElement('span');
+    inputTitle.classList.add('custom-title');
+    inputTitle.textContent = title[1];
+    inputBlock.appendChild(inputTitle);
+
+    for (let dir of [[0, 'F'], [1, 'R']]) {
+      let inputLabel = document.createElement('label');
+      inputLabel.classList.add('custom-control', 'custom-checkbox', 'custom-label');
+      inputBlock.appendChild(inputLabel);
+      let input = document.createElement('input');
+      input.classList.add('custom-control-input');
+      input.setAttribute('type', 'checkbox');
+      input.setAttribute('checked', '');
+      input.addEventListener('change', function(e) {
+        if (e.target.checked) {
+          mappings[index][title[0]].value |=  (1 << dir[0]);
+        } else {
+          mappings[index][title[0]].value &= ~(1 << dir[0]);
+        }
+
+        if (mappings[index][title[0]].value === 0) {
+          mappings[index][title[0]].node.classList.add('has-warning');
+        } else {
+          mappings[index][title[0]].node.classList.remove('has-warning');
+        }
+      });
+      inputLabel.appendChild(input);
+      let inputIndicator = document.createElement('span');
+      inputIndicator.classList.add('custom-control-indicator');
+      inputLabel.appendChild(inputIndicator);
+      let inputDescription = document.createElement('span');
+      inputDescription.classList.add('custom-control-description');
+      inputDescription.textContent = dir[1];
+      inputLabel.appendChild(inputDescription);
     }
   }
 
-  let functionInputWrapper = document.createElement('div');
-  functionInputWrapper.classList.add('col-sm-auto');
-  newMapping.appendChild(functionInputWrapper);
-  let functionInputLegend = document.createElement('legend');
-  functionInputLegend.classList.add('col-form-legend', 'sr-only');
-  functionInputLegend.textContent = 'Function';
-  functionInputWrapper.appendChild(functionInputLegend);
-  let functionInputSelect = document.createElement('select');
-  functionInputSelect.classList.add('custom-select');
-  functionInputWrapper.appendChild(functionInputSelect);
-  let functionInputSelected = document.createElement('option');
-  functionInputSelected.setAttribute('selected', '');
-  functionInputSelected.setAttribute('disabled', '');
-  functionInputSelected.textContent = 'Function';
-  functionInputSelect.appendChild(functionInputSelected);
-  let functionInputSpeed = document.createElement('option');
-  functionInputSpeed.setAttribute('value', '0');
-  functionInputSpeed.textContent = 'Speed';
-  functionInputSelect.appendChild(functionInputSpeed);
 
+  // Instruction Input
+  mappings[index].instruction.node.classList.add('col-sm-auto');
+  mapping.appendChild(mappings[index].instruction.node);
+  let instructionLegend = document.createElement('legend');
+  instructionLegend.classList.add('col-form-legend', 'sr-only');
+  instructionLegend.textContent = 'Function';
+  mappings[index].instruction.node.appendChild(instructionLegend);
+  let instructionSelect = document.createElement('select');
+  instructionSelect.classList.add('custom-select');
+  instructionSelect.addEventListener('change', function(e) {
+    mappings[index].instruction.value = e.target.value;
+    mappings[index].instruction.valid = e.target.value >= 0 && e.target.value < 32;
+    if (mappings[index].instruction.valid) {
+      mappings[index].instruction.node.classList.remove('has-danger');
+    }
+  });
+  mappings[index].instruction.node.appendChild(instructionSelect);
+  let instructionSelected = document.createElement('option');
+  instructionSelected.setAttribute('selected', '');
+  instructionSelected.setAttribute('disabled', '');
+  instructionSelected.textContent = 'Function';
+  instructionSelect.appendChild(instructionSelected);
+  let instructionSpeed = document.createElement('option');
+  instructionSpeed.setAttribute('value', '0');
+  instructionSpeed.textContent = 'Speed';
+  instructionSelect.appendChild(instructionSpeed);
   for (let f = 1; f < 29; f++) {
-    let functionInputOption = document.createElement('option');
-    functionInputOption.setAttribute('value', f);
-    functionInputOption.textContent = `F${f}`;
-    functionInputSelect.appendChild(functionInputOption);
+    let instructionOption = document.createElement('option');
+    instructionOption.setAttribute('value', f);
+    instructionOption.textContent = `F${f}`;
+    instructionSelect.appendChild(instructionOption);
   }
+  let instructionCustom = document.createElement('option');
+  instructionCustom.setAttribute('value', '31');
+  instructionCustom.textContent = 'Custom';
+  instructionSelect.appendChild(instructionCustom);
 
-  let functionInputCustom = document.createElement('option');
-  functionInputCustom.setAttribute('value', '31');
-  functionInputCustom.textContent = 'Custom';
-  functionInputSelect.appendChild(functionInputCustom);
 
-  let dataInputWrapper = document.createElement('div');
-  dataInputWrapper.classList.add('col-sm-2');
-  newMapping.appendChild(dataInputWrapper);
-  let dataInputLabel = document.createElement('label');
-  dataInputLabel.classList.add('sr-only');
-  dataInputLabel.setAttribute('for', `mapping-${lastMapping}-data`);
-  dataInputLabel.textContent = 'Data';
-  dataInputWrapper.appendChild(dataInputLabel);
+  // Data Input
+  mappings[index].data.node.classList.add('col-sm-2');
+  mapping.appendChild(mappings[index].data.node);
+  let dataLabel = document.createElement('label');
+  dataLabel.classList.add('sr-only');
+  dataLabel.setAttribute('for', `mapping-${index}-data`);
+  dataLabel.textContent = 'Data';
+  mappings[index].data.node.appendChild(dataLabel);
   let dataInput = document.createElement('input');
   dataInput.classList.add('form-control');
   dataInput.setAttribute('type', 'number');
+  dataInput.setAttribute('min', '0');
+  dataInput.setAttribute('max', '127');
+  // dataInput.setAttribute('value', '0');
   dataInput.setAttribute('placeholder', 'Data');
-  dataInput.id = `mapping-${lastMapping}-data`;
-  dataInputWrapper.appendChild(dataInput);
+  dataInput.id = `mapping-${index}-data`;
+  dataInput.addEventListener('input', function(e) {
+    if (e.target.validity.badInput ||
+        e.target.validity.rangeUnderflow ||
+        e.target.validity.rangeOverflow) {
+      e.target.value = mappings[index].data.value;
+    } else {
+      mappings[index].data.value = e.target.value;
+      mappings[index].data.valid = true;
+      mappings[index].data.node.classList.remove('has-danger');
+    }
+  });
+  mappings[index].data.node.appendChild(dataInput);
 
+
+  // Spacer
   let spacer = document.createElement('div');
   spacer.classList.add('col');
-  newMapping.appendChild(spacer);
+  mapping.appendChild(spacer);
 
-  let deleteMappingButton = document.createElement('button');
-  deleteMappingButton.classList.add('close');
-  deleteMappingButton.setAttribute('type', 'button');
-  deleteMappingButton.setAttribute('aria-label', 'Delete');
-  deleteMappingButton.addEventListener('click', function(e) {
-    mappingsList.removeChild(newMapping);
+
+  // Delete Button
+  let deleteButton = document.createElement('button');
+  deleteButton.classList.add('close');
+  deleteButton.setAttribute('type', 'button');
+  deleteButton.setAttribute('aria-label', 'Delete');
+  deleteButton.addEventListener('click', function() {
+    if (index == mappings.length - 1) {
+      mappings.pop();
+    } else {
+      delete mappings[index];
+    }
+    mappingsList.removeChild(mapping);
     numMappings--;
 
     if (numMappings === 0) {
-      saveMappingsButton.setAttribute('disabled', '');
+      mappings = [];
+      saveButton.setAttribute('disabled', '');
     }
   });
-  newMapping.appendChild(deleteMappingButton);
-  let deleteMappingButtonSpan = document.createElement('span');
-  deleteMappingButtonSpan.setAttribute('aria-hidden', 'true');
-  deleteMappingButtonSpan.textContent = '×';
-  deleteMappingButton.appendChild(deleteMappingButtonSpan);
+  mapping.appendChild(deleteButton);
+  let deleteButtonSpan = document.createElement('span');
+  deleteButtonSpan.setAttribute('aria-hidden', 'true');
+  deleteButtonSpan.textContent = '×';
+  deleteButton.appendChild(deleteButtonSpan);
 
-  mappingsList.appendChild(newMapping);
-  lastMapping++;
+  // Append the new mapping to the mappings list
+  mappingsList.appendChild(mapping);
   numMappings++;
 
   if (numMappings === 1) {
-    saveMappingsButton.removeAttribute('disabled');
+    saveButton.removeAttribute('disabled');
+  }
+}
+
+
+// saveButton.setAttribute('disabled', '');
+saveButton.addEventListener('click', function() {
+  let buffer = new ArrayBuffer((2 + numMappings) * 4);
+  let data = new DataView(buffer);
+  data.setUint32(0, 0);
+  data.setUint32(4, numMappings);
+
+  let m = 2;
+  let valid = true;
+  for (let mapping of mappings) {
+    if (mapping) {
+      for (let i in mapping) {
+        if (mapping[i].valid === false) {
+          mapping[i].node.classList.add('has-danger');
+          valid = false;
+        }
+      }
+      if (valid) {
+        data.setUint32(m * 4, (parseInt(mapping.id.value, 16) << 16) |
+                  (mapping.dot.value << 14) | (mapping.dir.value << 12) |
+                  (mapping.instruction.value << 7) | mapping.data.value);
+      }
+      m++;
+    }
+  }
+
+  if (valid) {
+    saveAs(new Blob([data], {type: 'application/octet-stream'}), 'mappings.dat');
+    // alert('Save downloaded file to locomotive storage device');
   }
 });
+
+newButton.addEventListener('click', createMapping);
+createMapping();
