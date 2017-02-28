@@ -1,0 +1,16 @@
+{signal: [
+  {				node: 'a...b.......c...d'},
+  {name: 'clk', wave: 'x...n....|..x...'},
+  {name: 'dat', wave: 'x...=....|..x...', data: ['data']},
+  {name: 'out', wave: '1..0=....|..0...', data: ['clk ^ dat']},
+  {				node: 'e..fg.......h...i'}
+],
+  edge: [
+    'ab START', 'bc DATA', 'cd STOP', 'e<->f 3 x 960us', 'f<->g 960us', 'g<->h N x 960us', 'h<->i 4 x 960us'
+  ],
+ head: {
+   tock: 1
+ },
+ config: {
+   hscale: 2
+ }}
