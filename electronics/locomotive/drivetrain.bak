@@ -1,0 +1,291 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:stm32
+LIBS:bcan
+LIBS:locomotive-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 4 6
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L ZXMHC6A07N8TC U?
+U 1 1 58B2491E
+P 5850 4050
+F 0 "U?" H 5450 4350 60  0000 C CNN
+F 1 "ZXMHC6A07N8TC" H 5950 4350 60  0000 C CNN
+F 2 "" H 5750 4050 60  0001 C CNN
+F 3 "" H 5750 4050 60  0001 C CNN
+	1    5850 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L VCC #PWR?
+U 1 1 58B24967
+P 6900 3800
+F 0 "#PWR?" H 6900 3650 50  0001 C CNN
+F 1 "VCC" H 6900 3950 50  0000 C CNN
+F 2 "" H 6900 3800 50  0001 C CNN
+F 3 "" H 6900 3800 50  0001 C CNN
+	1    6900 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 58B2497E
+P 5100 4500
+F 0 "#PWR?" H 5100 4250 50  0001 C CNN
+F 1 "GND" H 5100 4350 50  0000 C CNN
+F 2 "" H 5100 4500 50  0001 C CNN
+F 3 "" H 5100 4500 50  0001 C CNN
+	1    5100 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 4100 5100 4100
+Wire Wire Line
+	5100 3900 5100 4100
+Wire Wire Line
+	5100 4100 5100 4400
+Wire Wire Line
+	5100 4400 5100 4500
+Wire Wire Line
+	6900 4000 6400 4000
+Wire Wire Line
+	6900 3800 6900 3900
+Wire Wire Line
+	6900 3900 6900 4000
+Wire Wire Line
+	6900 4000 6900 4200
+$Comp
+L 4N25 U?
+U 1 1 58B249A2
+P 4700 3800
+F 0 "U?" H 4500 4000 50  0000 L CNN
+F 1 "4N25" H 4700 4000 50  0000 L CNN
+F 2 "DIP-6" H 4500 3600 50  0001 L CIN
+F 3 "" H 4700 3800 50  0001 L CNN
+	1    4700 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R?
+U 1 1 58B24A33
+P 6700 3900
+F 0 "R?" H 6730 3920 50  0000 L CNN
+F 1 "10k" H 6730 3860 50  0000 L CNN
+F 2 "" H 6700 3900 50  0001 C CNN
+F 3 "" H 6700 3900 50  0001 C CNN
+	1    6700 3900
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6400 3900 6500 3900
+Wire Wire Line
+	6500 3900 6600 3900
+Connection ~ 6900 3900
+$Comp
+L R_Small R?
+U 1 1 58B24B0B
+P 6700 4200
+F 0 "R?" H 6730 4220 50  0000 L CNN
+F 1 "10k" H 6730 4160 50  0000 L CNN
+F 2 "" H 6700 4200 50  0001 C CNN
+F 3 "" H 6700 4200 50  0001 C CNN
+	1    6700 4200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6400 4200 6500 4200
+Wire Wire Line
+	6500 4200 6600 4200
+Wire Wire Line
+	6900 4200 6800 4200
+Connection ~ 6900 4000
+Wire Wire Line
+	6400 4100 7200 4100
+Text HLabel 7200 4100 2    60   Input ~ 0
+MOT-
+Text HLabel 3900 4000 0    60   Input ~ 0
+MOT+
+Wire Wire Line
+	3900 4000 5300 4000
+Wire Wire Line
+	6500 3900 6500 3700
+Wire Wire Line
+	6500 3700 5200 3700
+Wire Wire Line
+	5200 3700 5200 3800
+Wire Wire Line
+	5200 3800 5200 3900
+Wire Wire Line
+	5200 3900 5300 3900
+Connection ~ 6500 3900
+Wire Wire Line
+	6500 4200 6500 4400
+Wire Wire Line
+	6500 4400 5200 4400
+Wire Wire Line
+	5200 4400 5200 4300
+Wire Wire Line
+	5200 4300 5200 4200
+Wire Wire Line
+	5200 4200 5300 4200
+Connection ~ 6500 4200
+$Comp
+L 4N25 U?
+U 1 1 58B24C7E
+P 4700 4300
+F 0 "U?" H 4500 4500 50  0000 L CNN
+F 1 "4N25" H 4700 4500 50  0000 L CNN
+F 2 "DIP-6" H 4500 4100 50  0001 L CIN
+F 3 "" H 4700 4300 50  0001 L CNN
+	1    4700 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 3900 5100 3900
+Connection ~ 5100 4100
+Wire Wire Line
+	5000 4300 5200 4300
+Connection ~ 5200 4300
+Wire Wire Line
+	5000 4400 5100 4400
+Connection ~ 5100 4400
+$Comp
+L R_Small R?
+U 1 1 58B24D8E
+P 4100 3700
+F 0 "R?" H 4130 3720 50  0000 L CNN
+F 1 "220" H 4130 3660 50  0000 L CNN
+F 2 "" H 4100 3700 50  0001 C CNN
+F 3 "" H 4100 3700 50  0001 C CNN
+	1    4100 3700
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4400 3700 4200 3700
+$Comp
+L R_Small R?
+U 1 1 58B24E31
+P 4100 4200
+F 0 "R?" H 4130 4220 50  0000 L CNN
+F 1 "220" H 4130 4160 50  0000 L CNN
+F 2 "" H 4100 4200 50  0001 C CNN
+F 3 "" H 4100 4200 50  0001 C CNN
+	1    4100 4200
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4400 4200 4200 4200
+Wire Wire Line
+	5000 3800 5200 3800
+Connection ~ 5200 3800
+Wire Wire Line
+	4400 3900 4300 3900
+Wire Wire Line
+	4300 3900 4300 4400
+Wire Wire Line
+	4300 4400 4300 4500
+Wire Wire Line
+	4300 4400 4400 4400
+$Comp
+L GND #PWR?
+U 1 1 58B24F44
+P 4300 4500
+F 0 "#PWR?" H 4300 4250 50  0001 C CNN
+F 1 "GND" H 4300 4350 50  0000 C CNN
+F 2 "" H 4300 4500 50  0001 C CNN
+F 3 "" H 4300 4500 50  0001 C CNN
+	1    4300 4500
+	1    0    0    -1  
+$EndComp
+Connection ~ 4300 4400
+Wire Wire Line
+	4000 3700 3900 3700
+Wire Wire Line
+	4000 4200 3900 4200
+Text HLabel 3900 3700 0    60   Input ~ 0
+PWM_A
+Text HLabel 3900 4200 0    60   Input ~ 0
+PWM_B
+$Comp
+L GND #PWR?
+U 1 1 58B25489
+P 7000 4500
+F 0 "#PWR?" H 7000 4250 50  0001 C CNN
+F 1 "GND" H 7000 4350 50  0000 C CNN
+F 2 "" H 7000 4500 50  0001 C CNN
+F 3 "" H 7000 4500 50  0001 C CNN
+	1    7000 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 3900 6900 3900
+Wire Wire Line
+	6900 3900 7000 3900
+Wire Wire Line
+	7000 3900 7200 3900
+Wire Wire Line
+	7000 3900 7000 4150
+Connection ~ 7000 3900
+Text HLabel 7200 3900 2    60   Input ~ 0
+VMOT
+$Comp
+L CP_Small C?
+U 1 1 58B26379
+P 7000 4250
+F 0 "C?" H 7010 4320 50  0000 L CNN
+F 1 "220u" H 7010 4170 50  0000 L CNN
+F 2 "" H 7000 4250 50  0001 C CNN
+F 3 "" H 7000 4250 50  0001 C CNN
+	1    7000 4250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7000 4500 7000 4400
+Wire Wire Line
+	7000 4400 7000 4350
+Wire Wire Line
+	7000 4400 7200 4400
+Connection ~ 7000 4400
+Text HLabel 7200 4400 2    60   Input ~ 0
+GND
+$EndSCHEMATC
