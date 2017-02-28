@@ -1,4 +1,4 @@
-# Beacon Mappings Format
+# Beacon Mappings Binary Format
 This defines the format used to store beacon mappings.
 
 ## File Breakdown
