@@ -1,3 +1,6 @@
 [submodule "firmware/locomotive/libopencm3"]
 	path = firmware/locomotive/libopencm3
 	url = https://github.com/libopencm3/libopencm3
+[submodule "firmware/locomotive/evq"]
+	path = firmware/locomotive/evq
+	url = https://github.com/prigarimalla/evq
