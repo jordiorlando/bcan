@@ -4,7 +4,7 @@ This firmware is responsible for controlling every aspect of the locomotive
 ## Prerequisites
 - arm-none-eabi-gcc
 - arm-none-eabi-newlib
-- stlink/openocd/dfu-util
+- openocd
 
 ## Building
 Build the firmware.
@@ -13,7 +13,7 @@ $ make
 ```
 
 ## Flashing
-Flash the firmware.
+Build and flash the firmware.
 ```sh
 $ make flash
 ```
