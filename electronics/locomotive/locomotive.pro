@@ -1,4 +1,4 @@
-update=Tue 21 Feb 2017 07:16:59 PM CST
+update=3/10/2017 6:58:27 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -59,4 +59,6 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=stm32
-LibName31=/home/jordi/Documents/git/bcan/electronics/lib/bcan
+LibName31=C:/Users/Azure/OneDrive/Documents/SPX3819
+LibName32=D:/Downloads/lib/bcan
+LibName33=C:/Users/Azure/OneDrive/Documents/TSOP57238
