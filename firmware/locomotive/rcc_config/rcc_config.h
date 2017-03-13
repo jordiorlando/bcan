@@ -1,5 +1,5 @@
-#ifndef _RCC_CONFIG_H_
-#define _RCC_CONFIG_H_
+#ifndef RCC_CONFIG_H
+#define RCC_CONFIG_H
 
 #include <stdlib.h>
 
