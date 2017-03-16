@@ -3,6 +3,9 @@
 #define BIT_PERIOD    960
 #define NUM_BITS      16
 #define BUFFER_LENGTH ((2 * NUM_BITS) + 2)
+#define CH34_PORT     GPIOB
+#define CH3_PIN       GPIO0
+#define CH4_PIN       GPIO1
 
 
 volatile bool is_reading = false;
@@ -13,11 +16,11 @@ volatile uint32_t total = 0;
 
 
 static void beacon_gpio_setup(void) {
-	/* Set PB0 and PB1 to 'input floating'. */
-	gpio_mode_setup(GPIOB, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO0 | GPIO1);
+	/* Set PB0 and PB1 to 'alternate function floating'. */
+	gpio_mode_setup(CH34_PORT, GPIO_MODE_AF, GPIO_PUPD_PULLDOWN, CH3_PIN | CH4_PIN);
 
 	/* Set PB0 and PB1 alternate function to TIM3 CH3 and CH4. */
-	gpio_set_af(GPIOB, GPIO_AF2, GPIO0 | GPIO1);
+	gpio_set_af(CH34_PORT, GPIO_AF2, CH3_PIN | CH4_PIN);
 }
 
 static void beacon_timer_setup(void) {
@@ -33,63 +36,70 @@ static void beacon_timer_setup(void) {
 	/* Set timer mode: 2x clock divider, edge aligned, direction up. */
 	timer_set_mode(TIM3, TIM_CR1_CKD_CK_INT_MUL_2, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
 
+	/* Only generate update event on overflow. */
+	timer_update_on_overflow(TIM3);
+
 	/* Set the prescaler to have the timer run at 1MHz. */
-	timer_set_prescaler(TIM3, rcc_apb1_frequency / 1000000);
+	timer_set_prescaler(TIM3, (rcc_apb1_frequency / 1000000) - 1);
 
 	/* Count up to 0x7FFF (~32.7ms) before timeout event. */
-	timer_set_period(TIM2, 0x7FFF);
+	timer_set_period(TIM3, 0x7FFF);
 
 	/* Set channel direction and used input. */
 	timer_ic_set_input(TIM3, TIM_IC3, TIM_IC_IN_TI3);
 	timer_ic_set_input(TIM3, TIM_IC4, TIM_IC_IN_TI4);
 
-	/* Set input capture polarity to noninverted/both edges. */
-	TIM_CCER(TIM3) |= (TIM_CCER_CC3NP | TIM_CCER_CC3P);
-	TIM_CCER(TIM3) |= (TIM_CCER_CC4NP | TIM_CCER_CC4P);
-
 	/* Set input capture filter and sampling frequency. */
 	timer_ic_set_filter(TIM3, TIM_IC3, TIM_IC_OFF);
 	timer_ic_set_filter(TIM3, TIM_IC4, TIM_IC_OFF);
 
+	/* Set input capture polarity to noninverted/both edges. */
+	TIM3_CCER |= (TIM_CCER_CC3NP | TIM_CCER_CC3P);
+	TIM3_CCER |= (TIM_CCER_CC4NP | TIM_CCER_CC4P);
+
 	/* Enable input capture. */
 	timer_ic_enable(TIM3, TIM_IC3);
 	timer_ic_enable(TIM3, TIM_IC4);
-
-	/* Enable counter. */
-	timer_enable_counter(TIM3);
 
 	/* Enable input capture interrupts. */
 	timer_enable_irq(TIM3, TIM_DIER_CC3IE);
 	timer_enable_irq(TIM3, TIM_DIER_CC4IE);
 
 	/* Enable update interrupt. */
-	timer_enable_irq(TIM3, TIM_DIER_CC2IE);
+	timer_enable_irq(TIM3, TIM_DIER_UIE);
+
+	/* Enable counter. */
+	timer_enable_counter(TIM3);
 }
 
 void tim3_isr(void) {
 	uint16_t pin = 0;
 	uint16_t pulse_length = 0;
 
-	if (timer_get_flag(TIM3, TIM_SR_UIF)) {
+	if (timer_get_flag(TIM3, TIM_SR_CC3IF)) {
+		timer_clear_flag(TIM3, TIM_SR_CC3IF);
+		pulse_length = TIM3_CCR3;
+		pin = CH3_PIN;
+	} else if (timer_get_flag(TIM3, TIM_SR_CC4IF)) {
+		timer_clear_flag(TIM3, TIM_SR_CC4IF);
+		pulse_length = TIM3_CCR4;
+		pin = CH4_PIN;
+	} else if (timer_get_flag(TIM3, TIM_SR_UIF)) {
 		/* Timeout has ocurred, prepare for a new beacon. */
+		timer_clear_flag(TIM3, TIM_SR_UIF);
 		is_reading = false;
 		sensor = 0;
 		received = 0;
 		timer_disable_update_event(TIM3);
-		timer_clear_flag(TIM3, TIM_SR_UIF);
-	} else if (timer_get_flag(TIM3, TIM_SR_CC3IF)) {
-		pin = GPIO0;
-		pulse_length = TIM_CCR3(TIM3);
-		timer_clear_flag(TIM3, TIM_SR_CC3IF);
-	} else if (timer_get_flag(TIM3, TIM_SR_CC4IF)) {
-		pin = GPIO1;
-		pulse_length = TIM_CCR4(TIM3);
-		timer_clear_flag(TIM3, TIM_SR_CC4IF);
+		return;
+	} else {
+		timer_clear_flag(TIM3, 0x1E66);
+		return;
 	}
 
 	if (!is_reading && (received == 0) && (pin != 0)) {
 		/* Reset the counter. */
-		timer_set_counter(TIM3, 0);
+		timer_set_counter(TIM3, 0x0000);
 
 		if (sensor == 0) {
 			/* First edge detected. Enable timeout event. */
@@ -106,20 +116,13 @@ void tim3_isr(void) {
 		}
 	} else if (is_reading && (pin == sensor)) {
 		/* Reset the counter. */
-		timer_set_counter(TIM3, 0);
+		timer_set_counter(TIM3, 0x0000);
 
 		if (received < BUFFER_LENGTH) {
 			/* Store the edge data. */
-			if (gpio_get(GPIOB, sensor)) {
-				/* Falling edge. */
-				buffer[received] = pulse_length | (1 << 15);
-			} else {
-				/* Rising edge. */
-				buffer[received] = pulse_length & ~(1 << 15);
-			}
-
-			received++;
+			buffer[received] = pulse_length | ((received % 2) << 15);
 			total += pulse_length;
+			received++;
 		}
 	}
 }
