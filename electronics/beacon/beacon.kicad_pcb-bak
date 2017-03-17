@@ -4,7 +4,7 @@
     (links 30)
     (no_connects 0)
     (area 137.924999 100.124999 162.075001 109.875001)
-    (thickness 0.8)
+    (thickness 1.6)
     (drawings 26)
     (tracks 146)
     (zones 0)
@@ -13,6 +13,13 @@
   )
 
   (page A4)
+  (title_block
+    (title "IR Beacon Board")
+    (date 2017-03-16)
+    (rev 1.1)
+    (company "ECE 445")
+  )
+
   (layers
     (0 F.Cu signal)
     (31 B.Cu signal)
@@ -62,7 +69,7 @@
     (pad_drill 0)
     (pad_to_mask_clearance 0.2)
     (aux_axis_origin 0 0)
-    (visible_elements FFFFFFFF)
+    (visible_elements FFFFFF7F)
     (pcbplotparams
       (layerselection 0x010f0_80000001)
       (usegerberextensions true)
@@ -646,10 +653,10 @@
       (net 1 GND))
   )
 
-  (module bcan:HO_Rail_2_Length2.4mm_Width4mm (layer F.Cu) (tedit 58CB8396) (tstamp 58CB8450)
+  (module bcan:HO_Rail_2_Length2.4mm_Width4mm (layer F.Cu) (tedit 58CC2784) (tstamp 58CB8450)
     (at 150 105)
     (path /58C5B8EB)
-    (fp_text reference J3 (at 0 -2.54) (layer F.SilkS)
+    (fp_text reference J3 (at 0 -2.54) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value Rails (at 0 2.54) (layer F.Fab)
