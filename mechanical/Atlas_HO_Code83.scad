@@ -39,13 +39,13 @@ module track() {
     }
   }
 }
-// Rev 1.0
+// Rev 1.1
 module beacon() {
   color("darkslategray")
   translate([0, 0, 0.8 + 0.55])
   union() {
     cube([16, 9.6, 1.6], true);
-    cube([20.8, 2.4, 1.6], true);
+    cube([24, 2.4, 1.6], true);
   }
 }
 

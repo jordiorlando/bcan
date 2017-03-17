@@ -282,7 +282,7 @@ U 1 1 58C5B8EB
 P 6200 4000
 F 0 "J3" H 6200 4150 50  0000 C CNN
 F 1 "Rails" V 6300 4000 50  0000 C CNN
-F 2 "bcan:HO_Rail_2_Length2.4mm_Width3mm" H 6200 4000 50  0001 C CNN
+F 2 "bcan:HO_Rail_2_Length2.4mm_Width4mm" H 6200 4000 50  0001 C CNN
 F 3 "" H 6200 4000 50  0001 C CNN
 	1    6200 4000
 	0    1    -1   0   

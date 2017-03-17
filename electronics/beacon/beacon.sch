@@ -37,8 +37,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "IR Beacon Board"
-Date "2017-02-25"
-Rev "1.0"
+Date "2017-03-16"
+Rev "1.1"
 Comp "ECE 445"
 Comment1 ""
 Comment2 ""
