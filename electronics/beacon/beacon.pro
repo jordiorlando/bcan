@@ -1,4 +1,4 @@
-update=Sat 25 Feb 2017 02:42:42 PM CST
+update=Tue 21 Mar 2017 12:39:05 PM CDT
 version=1
 last_client=kicad
 [pcbnew]
@@ -69,4 +69,4 @@ LibName27=opto
 LibName28=atmel
 LibName29=contrib
 LibName30=valves
-LibName31=bcan
+LibName31=bcan/bcan
