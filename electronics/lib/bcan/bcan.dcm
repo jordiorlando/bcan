@@ -1,5 +1,10 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP ACPL-M21L
+D SO-5, CMOS Optocoupler
+K DC Optocoupler
+$ENDCMP
+#
 $CMP ATTINY45-20XUR
 D TSSOP-8, 4k Flash, 256B SRAM, 256B EEPROM, Debug Wire
 K AVR 8bit Microcontroller tinyAVR
@@ -12,6 +17,15 @@ $ENDCMP
 $CMP M95512-RDW6TP
 D STMicroelectronics serial EEPROM with SPI interface in 8-pin package
 K serial SPI EEPROM memory external
+$ENDCMP
+#
+$CMP Q_DUAL_NMOS_PMOS_G1S2G2D2S1D1
+D Dual Transistor N-MOSFET/P-MOSFET (general), 6-pin package
+K nmos/pmos n-mos/p-mos n-mosfet/p-mosfet transistor
+$ENDCMP
+#
+$CMP SPX3819M5
+D Adjustible Voltage Regulator
 $ENDCMP
 #
 $CMP TPS70901DBV
@@ -97,6 +111,16 @@ $ENDCMP
 $CMP TPS70960DBV
 D 150mA LDO Voltage Regulator, Fixed Output 6V, SOT-23-5
 K 150mA LDO Regulator Fixed Positive
+$ENDCMP
+#
+$CMP TSOP57238
+D 38kHz IR Receiver
+K IR receiver sensor
+$ENDCMP
+#
+$CMP VL6180X
+D Laser Time-of-Flight Sensor
+K laser TOF sensor
 $ENDCMP
 #
 $CMP ZXMHC6A07N8TC

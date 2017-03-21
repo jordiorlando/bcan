@@ -4,3 +4,6 @@
 [submodule "firmware/locomotive/evq"]
 	path = firmware/locomotive/evq
 	url = https://github.com/prigarimalla/evq
+[submodule "electronics/lib/Acronet-KiCAD-Libraries"]
+	path = electronics/lib/Acronet-KiCAD-Libraries
+	url = https://github.com/acronet/Acronet-KiCAD-Libraries.git
