@@ -36,7 +36,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "TOF Sensor"
-Date "2017-03-21"
+Date "2017-03-22"
 Rev "1.0"
 Comp "ECE 445"
 Comment1 ""
@@ -110,26 +110,6 @@ F 3 "" H 7000 4000 50  0001 C CNN
 	1    7000 4000
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7000 4200 7000 4100
-Wire Wire Line
-	6600 4200 7000 4200
-Wire Wire Line
-	7000 3800 7000 3900
-Wire Wire Line
-	6600 3800 7000 3800
-Wire Wire Line
-	6600 3900 6800 3900
-Wire Wire Line
-	6600 4100 6800 4100
-Wire Wire Line
-	5100 3900 5100 3700
-Wire Wire Line
-	5400 3900 5100 3900
-Wire Wire Line
-	5300 3800 5300 3700
-Wire Wire Line
-	5400 3800 5300 3800
 $Comp
 L GND #PWR02
 U 1 1 58D74E9A
@@ -152,6 +132,82 @@ F 3 "" H 6700 3700 50  0001 C CNN
 	1    6700 3700
 	1    0    0    -1  
 $EndComp
+$Comp
+L CONN_01X04 J1
+U 1 1 58D7504A
+P 5600 4950
+F 0 "J1" H 5600 5200 50  0000 C CNN
+F 1 "TOF" V 5700 4950 50  0000 C CNN
+F 2 "Connectors_JST:JST_GH_BM04B-GHS-TBT_04x1.25mm_Straight" H 5600 4950 50  0001 C CNN
+F 3 "" H 5600 4950 50  0001 C CNN
+	1    5600 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L +2V8 #PWR04
+U 1 1 58D7520E
+P 5300 4750
+F 0 "#PWR04" H 5300 4600 50  0001 C CNN
+F 1 "+2V8" H 5300 4890 50  0000 C CNN
+F 2 "" H 5300 4750 50  0001 C CNN
+F 3 "" H 5300 4750 50  0001 C CNN
+	1    5300 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR05
+U 1 1 58D75237
+P 5300 5200
+F 0 "#PWR05" H 5300 4950 50  0001 C CNN
+F 1 "GND" H 5300 5050 50  0000 C CNN
+F 2 "" H 5300 5200 50  0001 C CNN
+F 3 "" H 5300 5200 50  0001 C CNN
+	1    5300 5200
+	1    0    0    -1  
+$EndComp
+Text Label 5100 4900 0    60   ~ 0
+SDA
+Text Label 5100 5000 0    60   ~ 0
+SCL
+Text Label 5100 4100 0    60   ~ 0
+SDA
+Text Label 5100 4200 0    60   ~ 0
+SCL
+Text Label 5100 3900 0    60   ~ 0
+INT
+Text Notes 5050 3650 2    60   Italic 0
+unpopulated
+$Comp
+L CONN_01X01 J2
+U 1 1 58D292C9
+P 6400 4800
+F 0 "J2" H 6400 4900 50  0000 C CNN
+F 1 "INT" V 6500 4800 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Square-SMD-Pad_Small" H 6400 4800 50  0001 C CNN
+F 3 "" H 6400 4800 50  0001 C CNN
+	1    6400 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7000 4200 7000 4100
+Wire Wire Line
+	6600 4200 7000 4200
+Wire Wire Line
+	7000 3800 7000 3900
+Wire Wire Line
+	6600 3800 7000 3800
+Wire Wire Line
+	6600 3900 6800 3900
+Wire Wire Line
+	6600 4100 6800 4100
+Wire Wire Line
+	5100 3900 5100 3700
+Wire Wire Line
+	5400 3900 5100 3900
+Wire Wire Line
+	5300 3800 5300 3700
+Wire Wire Line
+	5400 3800 5300 3800
 Wire Wire Line
 	6700 3700 6700 3900
 Connection ~ 6700 3800
@@ -169,67 +225,26 @@ Wire Wire Line
 Wire Wire Line
 	5200 3400 5200 3300
 Connection ~ 5200 3400
-$Comp
-L CONN_01X04 J1
-U 1 1 58D7504A
-P 6200 5050
-F 0 "J1" H 6200 5300 50  0000 C CNN
-F 1 "TOF" V 6300 5050 50  0000 C CNN
-F 2 "Connectors_JST:JST_GH_BM04B-GHS-TBT_04x1.25mm_Straight" H 6200 5050 50  0001 C CNN
-F 3 "" H 6200 5050 50  0001 C CNN
-	1    6200 5050
-	1    0    0    -1  
-$EndComp
-$Comp
-L +2V8 #PWR04
-U 1 1 58D7520E
-P 5900 4850
-F 0 "#PWR04" H 5900 4700 50  0001 C CNN
-F 1 "+2V8" H 5900 4990 50  0000 C CNN
-F 2 "" H 5900 4850 50  0001 C CNN
-F 3 "" H 5900 4850 50  0001 C CNN
-	1    5900 4850
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR05
-U 1 1 58D75237
-P 5900 5300
-F 0 "#PWR05" H 5900 5050 50  0001 C CNN
-F 1 "GND" H 5900 5150 50  0000 C CNN
-F 2 "" H 5900 5300 50  0001 C CNN
-F 3 "" H 5900 5300 50  0001 C CNN
-	1    5900 5300
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	6000 5200 5900 5200
+	5400 5100 5300 5100
 Wire Wire Line
-	5900 5200 5900 5300
+	5300 5100 5300 5200
 Wire Wire Line
-	6000 4900 5900 4900
+	5400 4800 5300 4800
 Wire Wire Line
-	5900 4900 5900 4850
+	5300 4800 5300 4750
 Wire Wire Line
-	6000 5000 5700 5000
+	5400 4900 5100 4900
 Wire Wire Line
-	6000 5100 5700 5100
-Text Label 5700 5000 0    60   ~ 0
-SDA
-Text Label 5700 5100 0    60   ~ 0
-SCL
+	5400 5000 5100 5000
 Wire Wire Line
 	5400 4100 5100 4100
 Wire Wire Line
 	5400 4200 5100 4200
-Text Label 5100 4100 0    60   ~ 0
-SDA
-Text Label 5100 4200 0    60   ~ 0
-SCL
-Text Label 5100 3900 0    60   ~ 0
-INT
-Text Notes 5050 3650 2    60   Italic 0
-unpopulated
 Wire Notes Line
 	5050 3650 4500 3650
+Wire Wire Line
+	6200 4800 6000 4800
+Text Label 6000 4800 0    60   ~ 0
+INT
 $EndSCHEMATC
