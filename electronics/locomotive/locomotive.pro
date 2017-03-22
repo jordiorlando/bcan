@@ -1,4 +1,4 @@
-update=3/10/2017 6:58:27 PM
+update=Wed 22 Mar 2017 02:25:25 PM CDT
 version=1
 last_client=kicad
 [pcbnew]
@@ -59,6 +59,14 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=stm32
-LibName31=C:/Users/Azure/OneDrive/Documents/SPX3819
-LibName32=D:/Downloads/lib/bcan
-LibName33=C:/Users/Azure/OneDrive/Documents/TSOP57238
+LibName31=bcan/bcan
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
