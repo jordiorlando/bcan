@@ -1,3 +1,2 @@
 (fp_lib_table
-  (lib (name bcan)(type KiCad)(uri /home/jordi/Documents/git/bcan/electronics/lib/bcan.pretty)(options "")(descr ""))
 )
