@@ -145,18 +145,22 @@ function createMapping() {
   instructionSelected.setAttribute('disabled', '');
   instructionSelected.textContent = 'Function';
   instructionSelect.appendChild(instructionSelected);
-  let instructionSpeed = document.createElement('option');
-  instructionSpeed.setAttribute('value', '0');
-  instructionSpeed.textContent = 'Speed';
-  instructionSelect.appendChild(instructionSpeed);
-  for (let f = 1; f < 29; f++) {
+  for (let f = 0; f <= 28; f++) {
     let instructionOption = document.createElement('option');
     instructionOption.setAttribute('value', f);
     instructionOption.textContent = `F${f}`;
     instructionSelect.appendChild(instructionOption);
   }
+  let instructionSpeed = document.createElement('option');
+  instructionSpeed.setAttribute('value', 29);
+  instructionSpeed.textContent = 'Speed';
+  instructionSelect.appendChild(instructionSpeed);
+  let instructionDirection = document.createElement('option');
+  instructionDirection.setAttribute('value', 30);
+  instructionDirection.textContent = 'Direction';
+  instructionSelect.appendChild(instructionDirection);
   let instructionCustom = document.createElement('option');
-  instructionCustom.setAttribute('value', '31');
+  instructionCustom.setAttribute('value', 31);
   instructionCustom.textContent = 'Custom';
   instructionSelect.appendChild(instructionCustom);
 
