@@ -18,7 +18,7 @@ Build the firmware into an Intel hex file.
 The ID should be a 4-digit hexadecimal number.
 ```sh
 $ make clean
-$ make all ID=0xdec0
+$ make all ID=0xbcaf
 ```
 
 ## Flashing

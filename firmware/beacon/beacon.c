@@ -1,6 +1,5 @@
 //============================================================================//
 //                               Atmel ATtiny45                               //
-//                                                                            //
 //                                   __   __                                  //
 //                                  |  \_/  |                                 //
 //          (PCINT5/~RST/ADC0) PB5 =|1     8|= VCC                            //
@@ -8,7 +7,6 @@
 //          (PCINT4/OC1B/ADC2) PB4 =|3     6|= PB1 (MISO/OC0B/OC1A/PCINT1)    //
 //                             GND =|4     5|= PB0 (MOSI/OC0A/~OC1A/PCINT0)   //
 //                                  |_______|                                 //
-//                                                                            //
 //============================================================================//
 
 #include <stdint.h>
@@ -19,10 +17,28 @@
 #define CARRIER 38000 // Carrier frequency - 38kHz
 #define PERIOD  10    // One period = 960us = 96us * 10
 
-void on(uint8_t n);
-void off(uint8_t n);
-void delay(uint8_t n);
+// Delay for some multiple of 96 microseconds (max for _delay_us() at 8MHz)
+static void delay(uint8_t n) {
+  for (uint8_t i = 0; i < n; i++) {
+    _delay_us(96);
+  }
+}
 
+// Enable PWM on PB1
+static void pwm_on(uint8_t n) {
+  // Compare Match Output B mode
+  //    COM0B = 10: clear/set OC0B on compare match (non-inverted)
+  TCCR0A |= _BV(COM0B1);
+  delay(n);
+}
+
+// Disable PWM on PB1
+static void pwm_off(uint8_t n) {
+  // Compare Match Output B mode
+  //    COM0B = 00: disconnect OC0B
+  TCCR0A &= ~_BV(COM0B1);
+  delay(n);
+}
 
 int main(void) {
   // Set PB1 as an output (function OC0B), and all others as inputs
@@ -53,8 +69,8 @@ int main(void) {
 
   while (1) {
     // Start of message
-    on(PERIOD * 3);
-    off(PERIOD);
+    pwm_on(PERIOD * 3);
+    pwm_off(PERIOD);
 
     // Transmit the unique ID using manchester code, MSB first
     // 0 - rising edge
@@ -63,39 +79,16 @@ int main(void) {
       uint32_t bit = (ID >> i) & 1;
       for (uint8_t clk = 0; clk <= 1; clk++) {
         if (clk ^ bit) {
-          on(PERIOD / 2);
+          pwm_on(PERIOD / 2);
         } else {
-          off(PERIOD / 2);
+          pwm_off(PERIOD / 2);
         }
       }
     }
 
     // End of message
-    off(PERIOD * 4);
+    pwm_off(PERIOD * 4);
   }
 
   return 0;
-}
-
-// Enable PWM on PB1
-void on(uint8_t n) {
-  // Compare Match Output B mode
-  //    COM0B = 10: clear/set OC0B on compare match (non-inverted)
-  TCCR0A |= _BV(COM0B1);
-  delay(n);
-}
-
-// Disable PWM on PB1
-void off(uint8_t n) {
-  // Compare Match Output B mode
-  //    COM0B = 00: disconnect OC0B
-  TCCR0A &= ~_BV(COM0B1);
-  delay(n);
-}
-
-// Delay for some multiple of 96 microseconds (max value for _delay_us())
-void delay(uint8_t n) {
-  for (uint8_t i = 0; i < n; i++) {
-    _delay_us(96);
-  }
 }
