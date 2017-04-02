@@ -6,6 +6,7 @@
 
 #include "rcc_config/rcc_config.h"
 #include "blink/blink.h"
+#include "tof/tof.h"
 
 #define CLOCK_CONFIG rcc_hse_8mhz_2v7_to_3v6[RCC_CLOCK_3V3_168MHZ]
 
@@ -35,8 +36,10 @@ int main(void) {
 	rcc_setup();
 	systick_setup();
 	blink_setup();
-
-	while (1);
+	tof_setup();
+	while (1){
+		tof_should_stop();
+	}
 
 	return 0;
 }
