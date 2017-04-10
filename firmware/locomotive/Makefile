@@ -1,8 +1,8 @@
 OPENCM3_DIR = libopencm3
 BINARY = locomotive
 
-DIRS = . blink
-OBJS = blink/blink.o
+DIRS = . blink beacon
+OBJS = blink/blink.o beacon/beacon.o
 
 LDSCRIPT = stm32f405rg.ld
 
