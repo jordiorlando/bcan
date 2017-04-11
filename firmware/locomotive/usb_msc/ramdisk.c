@@ -166,11 +166,16 @@ int ramdisk_read(uint32_t lba, uint8_t *copy_to)
 	return 0;
 }
 
+uint32_t lastLba = 0;
+
 int ramdisk_write(uint32_t lba, const uint8_t *copy_from)
 {
-	(void)lba;
-	(void)copy_from;
-	// ignore writes
+	// ignore writes outside of the data section
+	if (lba >= FILEDATA_START_SECTOR && lba < FILEDATA_START_SECTOR + FILEDATA_SECTOR_COUNT) {
+		memset(ramdata + (lba - FILEDATA_START_SECTOR) * SECTOR_SIZE, 0, SECTOR_SIZE);
+		memcpy(copy_to, ramdata + (lba - FILEDATA_START_SECTOR) * SECTOR_SIZE, SECTOR_SIZE);
+		lastLba = lba;
+	}
 	return 0;
 }
 
@@ -178,3 +183,9 @@ int ramdisk_blocks(void)
 {
 	return SECTOR_COUNT;
 }
+
+uint32_t getLastLba(void)
+{
+	return lastLba;
+}
+
