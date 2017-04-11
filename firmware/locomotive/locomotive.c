@@ -37,8 +37,13 @@ int main(void) {
 	systick_setup();
 	blink_setup();
 	tof_setup();
+
 	while (1){
-		tof_should_stop();
+		if (tof_should_stop()) {
+			gpio_clear(GPIOC, GPIO12);
+		} else {
+			gpio_set(GPIOC, GPIO12);
+		}
 	}
 
 	return 0;
