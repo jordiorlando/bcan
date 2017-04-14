@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="bcan,model,train">
+  <meta name="description" content="">
+  <meta name="author" content="0xdec">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>BCAN Configurator</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+  <style>
+    /* Show it is fixed to the top */
+    body {
+      min-height: 75rem;
+      padding-top: 4.5rem;
+    }
+    .col-sm-auto, .col-sm-2 {
+      padding-right: 15px;
+      padding-left: 0px;
+    }
+    .has-danger .card,
+    .has-danger .custom-select {
+      border-color: #d9534f;
+    }
+    .has-warning .card,
+    .has-warning .custom-select {
+      border-color: #f0ad4e;
+    }
+    .custom-card-block {
+      padding: 6px 12px;
+    }
+    .custom-title {
+      color: #636c72;
+    }
+    .custom-label {
+      margin-bottom: 0;
+      margin-right: 0;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://jordi.codes/bcan">BCAN Configurator</a>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="beacon">Beacon Protocol <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#help">Help</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <ul class="list-group">
+      <li class="list-group-item row">
+        <div class="input-group">
+          <span class="input-group-addon" id="beacon-id">0x</span>
+          <input class="form-control" type="text" minlength="4" maxlength="4" pattern="[0-9A-Fa-f]{4}" placeholder="Beacon ID" aria-describedby="beacon-id" id="beacon-id-input">
+        </div>
+      </li>
+      <li class="list-group-item row justify-content-center">
+        <div id="WaveDrom_Display_0">
+
+        </div>
+      </li>
+    </ul>
+  </div>
+
+
+  <!-- Lodash -->
+  <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js" crossorigin="anonymous"></script>
+
+  <!-- jQuery first, then Tether, then Bootstrap JS. -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/skins/default.js" integrity="sha256-b0bMCDAJkmJXO7AqEn36pV0jGj5g0CZp9pQSmnJPLSk=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/wavedrom.min.js" integrity="sha256-2b6i/+M1zvQr+cs4NjREq35LDHVW7DqQp6CE8lk2S8U=" crossorigin="anonymous"></script>
+
+  <script>
+  var beaconID = '';
+  var beaconJSON = {
+    signal: [
+      {node: 'a...b...............c...d'},
+      {name: 'clk', wave: 'x...n...............x...'},
+      {name: 'dat', wave: 'x...=...............x...'},
+      {name: 'out', wave: '1..0=...............0...'},
+      {node: 'e..fg...............h...i'}
+    ],
+    edge: [
+      'ab START', 'bc DATA', 'cd STOP', 'e<->f 3 x 960us', 'f<->g 960us', 'g<->h 16 x 960us', 'h<->i 4 x 960us'
+    ],
+    head: {
+      tock: 1
+    },
+    config: {
+      hscale: 1
+    }
+  };
+
+  document.getElementById('beacon-id-input').value = '';
+  document.getElementById('beacon-id-input').addEventListener('input', function(e) {
+    if (/^[0-9A-F]{0,4}$/i.test(e.target.value)) {
+      beaconID = e.target.value;
+
+      if (beaconID.length == 4) {
+        let id = parseInt(beaconID, 16);
+        let prevBit;
+        let dat = 'X...';
+        let out = 'H..<L.';
+
+        for (let i = 15; i >= 0; i--) {
+          let bit = (id >> i) & 1;
+
+          if (bit != prevBit) {
+            dat += bit ? 'h' : 'l';
+            if (i == 15) {
+              out += bit ? 'HL' : '.H';
+            } else {
+              out += bit ? '.L' : '.H';
+            }
+          } else {
+            dat += '.';
+            out += bit ? 'HL' : 'LH';
+          }
+
+          prevBit = bit;
+        }
+
+        beaconJSON.signal[2].wave = dat + 'X...';
+        beaconJSON.signal[3].wave = out + (prevBit ? '....' : '>L...');
+
+        WaveDrom.RenderWaveForm(0, beaconJSON, 'WaveDrom_Display_');
+      }
+    } else {
+      e.target.value = beaconID;
+    }
+  });
+
+  WaveDrom.RenderWaveForm(0, beaconJSON, 'WaveDrom_Display_');
+  </script>
+</body>
+
+</html>
