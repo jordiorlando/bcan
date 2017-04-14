@@ -6,10 +6,10 @@
 
 #include "rcc_config/rcc_config.h"
 #include "blink/blink.h"
+#include "beacon/beacon.h"
 #include "tof/tof.h"
 
-#define CLOCK_CONFIG rcc_hse_8mhz_2v7_to_3v6[RCC_CLOCK_3V3_168MHZ]
-
+#define CLOCK_CONFIG rcc_hse_16mhz_2v7_to_3v6[RCC_CLOCK_3V3_168MHZ]
 
 /* Number of milliseconds since reset (overflows every 49 days). */
 volatile uint32_t system_millis;
@@ -36,13 +36,14 @@ int main(void) {
 	rcc_setup();
 	systick_setup();
 	blink_setup();
+	beacon_setup();
 	tof_setup();
 
-	while (1){
+	while (1) {
 		if (tof_should_stop()) {
-			gpio_clear(GPIOC, GPIO12);
+			blink_on();
 		} else {
-			gpio_set(GPIOC, GPIO12);
+			blink_off();
 		}
 	}
 
