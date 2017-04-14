@@ -19,3 +19,13 @@ void blink(void) {
   /* Blink the on-board LED. */
   gpio_toggle(GPIOC, GPIO12);
 }
+
+void blink_on(void) {
+	/* Turn on the on-board LED. */
+  gpio_clear(GPIOC, GPIO12);
+}
+
+void blink_off(void) {
+	/* Turn off the on-board LED. */
+  gpio_set(GPIOC, GPIO12);
+}

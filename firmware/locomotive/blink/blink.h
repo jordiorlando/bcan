@@ -6,5 +6,7 @@
 
 void blink_setup(void);
 void blink(void);
+void blink_on(void);
+void blink_off(void);
 
 #endif
