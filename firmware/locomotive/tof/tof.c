@@ -5,9 +5,6 @@ VL6180x_RangeData_t tof_range;
 bool is_triggered = false;
 
 static void tof_gpio_setup(void) {
-	/* Enable GPIOB clock. */
-	rcc_periph_clock_enable(RCC_GPIOB);
-
 	/* Set PB10 and PB11 to 'alternate function floating'. */
 	gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO10 | GPIO11);
 	gpio_set_output_options(GPIOB, GPIO_OTYPE_OD, GPIO_OSPEED_2MHZ, GPIO10 | GPIO11);

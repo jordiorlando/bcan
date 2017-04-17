@@ -1,11 +1,11 @@
-#include <stdlib.h>
-
 #include <libopencm3/cm3/nvic.h>
 #include <libopencm3/cm3/systick.h>
 #include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/gpio.h>
 
+#include "locomotive.h"
 #include "rcc_config/rcc_config.h"
-#include "blink/blink.h"
+#include "led/led.h"
 #include "beacon/beacon.h"
 #include "tof/tof.h"
 
@@ -14,10 +14,22 @@
 /* Number of milliseconds since reset (overflows every 49 days). */
 volatile uint32_t system_millis;
 
+void sys_tick_handler(void) {
+	system_millis++;
+}
 
 static void rcc_setup(void) {
 	/* Enable system clock at 168MHz. */
 	rcc_clock_setup_hse_3v3(&CLOCK_CONFIG);
+}
+
+static void gpio_setup(void) {
+	/* Enable GPIOA clock. */
+	rcc_periph_clock_enable(RCC_GPIOA);
+	/* Enable GPIOB clock. */
+	rcc_periph_clock_enable(RCC_GPIOB);
+	/* Enable GPIOC clock. */
+	rcc_periph_clock_enable(RCC_GPIOC);
 }
 
 static void systick_setup(void) {
@@ -28,22 +40,25 @@ static void systick_setup(void) {
 	systick_interrupt_enable();
 }
 
-void sys_tick_handler(void) {
-	system_millis++;
-}
-
 int main(void) {
 	rcc_setup();
+	gpio_setup();
 	systick_setup();
-	blink_setup();
+
+	led_setup(LED_FRONT);
 	beacon_setup();
 	tof_setup();
 
 	while (1) {
+		if (beacon_available()) {
+			beacon_parse();
+			// led_blink(LED_FRONT);
+		}
+
 		if (tof_should_stop()) {
-			blink_on();
+			led_on(LED_FRONT);
 		} else {
-			blink_off();
+			led_off(LED_FRONT);
 		}
 	}
 
