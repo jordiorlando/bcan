@@ -109,9 +109,10 @@ int main(void) {
 	tof_setup();
 	flash_setup();
 
-	flash_function_add(0, blink_data);
 	flash_reset();
 	flash_add(0x00000000);
+	flash_load();
+	flash_function_add(0, blink_data);
 
 	uint32_t millis_since_op = 0;
 	uint32_t last_exec = system_millis;

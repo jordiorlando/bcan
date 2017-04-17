@@ -42,7 +42,9 @@ static void flash_spi_init(void){
 void flash_setup(void){
 	flash_gpio_init();
 	flash_spi_init();
+}
 
+void flash_load(void){
 	// Get number of entries
 	flash_cs_low();
 	spi_send(SPI2, FLASH_READ_INSTRUCTION);
@@ -76,7 +78,6 @@ void flash_setup(void){
 	for(i = 0; i < FLASH_MAX_FUNCTIONS; i++){
 		flash_functions_list[i] = flash_placeholder_func;
 	}
-
 }
 
 void flash_function_add(int idx, flash_func f){

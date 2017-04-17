@@ -19,6 +19,7 @@ typedef uint32_t flash_mapping;
 typedef void(* flash_func)(uint8_t data);
 
 void flash_setup(void);
+void flash_load(void);
 void flash_function_add(int idx, flash_func f);
 void flash_reset(void);
 void flash_add(flash_mapping m);
