@@ -1,17 +1,23 @@
 #include "beacon.h"
 
 /* Protocol specifications */
-#define BIT_PERIOD    960
-#define NUM_BITS      16
-#define BUFFER_LENGTH ((2 * NUM_BITS) + 2)
+#define BIT_PERIOD      960
+#define NUM_BITS        16
+#define BUFFER_LENGTH   ((2 * NUM_BITS) + 2)
+#define MESSAGE_LENGTH  ((NUM_BITS + 8) * BIT_PERIOD)
 /* 1MHz */
 #define TIMER_FREQUENCY 1000000
 /* TIM3 CH3 */
-#define PIN_R GPIO0
-#define IC_R  TIM_IC3
+#define R_PIN PB0
+#define R_IC  TIM_IC3
+#define R_IF  TIM_SR_CC3IF
+#define R_CCR TIM3_CCR3
 /* TIM3 CH4 */
-#define PIN_L GPIO1
-#define IC_L  TIM_IC4
+#define L_PIN PB1
+#define L_IC  TIM_IC4
+#define L_IF  TIM_SR_CC4IF
+#define L_CCR TIM3_CCR4
+
 
 volatile bool is_reading = false;
 volatile bool is_parsed = true;
@@ -27,14 +33,14 @@ void tim3_isr(void) {
 	uint16_t pin = 0;
 	uint16_t pulse_length = 0;
 
-	if (timer_get_flag(TIM3, TIM_SR_CC3IF)) {
-		timer_clear_flag(TIM3, TIM_SR_CC3IF);
-		pulse_length = TIM3_CCR3;
-		pin = PIN_R;
-	} else if (timer_get_flag(TIM3, TIM_SR_CC4IF)) {
-		timer_clear_flag(TIM3, TIM_SR_CC4IF);
-		pulse_length = TIM3_CCR4;
-		pin = PIN_L;
+	if (timer_get_flag(TIM3, R_IF)) {
+		timer_clear_flag(TIM3, R_IF);
+		pulse_length = R_CCR;
+		pin = PIN(R_PIN);
+	} else if (timer_get_flag(TIM3, L_IF)) {
+		timer_clear_flag(TIM3, L_IF);
+		pulse_length = L_CCR;
+		pin = PIN(L_PIN);
 	} else if (timer_get_flag(TIM3, TIM_SR_UIF)) {
 		/* Timeout has ocurred, prepare for a new beacon. */
 		timer_clear_flag(TIM3, TIM_SR_UIF);
@@ -76,23 +82,24 @@ void tim3_isr(void) {
 			received++;
 		}
 
-		if ((received == BUFFER_LENGTH) || (total >= ((NUM_BITS + 8) * BIT_PERIOD))) {
+		#ifdef BEACON_FAST_PARSE
+		if ((received == BUFFER_LENGTH) || (total >= MESSAGE_LENGTH)) {
+		#else
+		if (received == BUFFER_LENGTH) {
+		#endif
 			is_parsed = false;
 		}
 	}
 }
 
-static void beacon_gpio_setup(void) {
-	/* Enable GPIOB clock. */
-	rcc_periph_clock_enable(RCC_GPIOB);
-}
+void beacon_setup(void) {
+	/* Set sensor pins to 'alternate function floating'. */
+	gpio_mode_setup(PORT(R_PIN), GPIO_MODE_AF, GPIO_PUPD_NONE, PIN(R_PIN));
+	gpio_mode_setup(PORT(L_PIN), GPIO_MODE_AF, GPIO_PUPD_NONE, PIN(L_PIN));
 
-static void beacon_timer_setup(void) {
-	/* Set PB0 and PB1 to 'alternate function floating'. */
-	gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN_R | PIN_L);
-
-	/* Set PB0 and PB1 to alternate function 2. */
-	gpio_set_af(GPIOB, GPIO_AF2, PIN_R | PIN_L);
+	/* Set sensor pins to alternate function 2. */
+	gpio_set_af(PORT(R_PIN), GPIO_AF2, PIN(R_PIN));
+	gpio_set_af(PORT(L_PIN), GPIO_AF2, PIN(L_PIN));
 
 	/* Enable TIM3 clock. */
 	rcc_periph_clock_enable(RCC_TIM3);
@@ -104,7 +111,8 @@ static void beacon_timer_setup(void) {
 	timer_reset(TIM3);
 
 	/* Set timer mode: 2x clock divider, edge aligned, direction up. */
-	timer_set_mode(TIM3, TIM_CR1_CKD_CK_INT_MUL_2, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
+	timer_set_mode(TIM3, TIM_CR1_CKD_CK_INT_MUL_2, TIM_CR1_CMS_EDGE,
+		TIM_CR1_DIR_UP);
 
 	/* Only generate update event on overflow. */
 	timer_update_on_overflow(TIM3);
@@ -116,20 +124,20 @@ static void beacon_timer_setup(void) {
 	timer_set_period(TIM3, 0x7FFF);
 
 	/* Set channel direction and used input. */
-	timer_ic_set_input(TIM3, IC_R, TIM_IC_IN_TI3);
-	timer_ic_set_input(TIM3, IC_L, TIM_IC_IN_TI4);
+	timer_ic_set_input(TIM3, R_IC, TIM_IC_IN_TI3);
+	timer_ic_set_input(TIM3, L_IC, TIM_IC_IN_TI4);
 
 	/* Set input capture filter and sampling frequency. */
-	timer_ic_set_filter(TIM3, IC_R, TIM_IC_OFF);
-	timer_ic_set_filter(TIM3, IC_L, TIM_IC_OFF);
+	timer_ic_set_filter(TIM3, R_IC, TIM_IC_OFF);
+	timer_ic_set_filter(TIM3, L_IC, TIM_IC_OFF);
 
 	/* Set input capture polarity to noninverted/both edges. */
 	TIM3_CCER |= (TIM_CCER_CC3NP | TIM_CCER_CC3P);
 	TIM3_CCER |= (TIM_CCER_CC4NP | TIM_CCER_CC4P);
 
 	/* Enable input capture. */
-	timer_ic_enable(TIM3, IC_R);
-	timer_ic_enable(TIM3, IC_L);
+	timer_ic_enable(TIM3, R_IC);
+	timer_ic_enable(TIM3, L_IC);
 
 	/* Enable input capture interrupts. */
 	timer_enable_irq(TIM3, TIM_DIER_CC3IE);
@@ -140,11 +148,6 @@ static void beacon_timer_setup(void) {
 
 	/* Enable counter. */
 	timer_enable_counter(TIM3);
-}
-
-void beacon_setup(void) {
-	beacon_gpio_setup();
-	beacon_timer_setup();
 }
 
 bool beacon_available(void) {
