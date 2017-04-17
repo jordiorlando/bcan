@@ -93,7 +93,7 @@ static void print_id(uint16_t id) {
 }
 
 static void blink_data(uint8_t unused) {
-	blink();
+	led_blink(LED_FRONT);
 	(void)unused;
 }
 
