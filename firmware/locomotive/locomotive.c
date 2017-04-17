@@ -9,7 +9,7 @@
 #include "beacon/beacon.h"
 #include "tof/tof.h"
 
-#define CLOCK_CONFIG rcc_hse_16mhz_2v7_to_3v6[RCC_CLOCK_3V3_168MHZ]
+#define TOF_TRIGGER_DISTANCE 50
 
 /* Number of milliseconds since reset (overflows every 49 days). */
 volatile uint32_t system_millis;
@@ -20,7 +20,7 @@ void sys_tick_handler(void) {
 
 static void rcc_setup(void) {
 	/* Enable system clock at 168MHz. */
-	rcc_clock_setup_hse_3v3(&CLOCK_CONFIG);
+	rcc_clock_setup_hse_3v3(&rcc_hse_16mhz_2v7_to_3v6[RCC_CLOCK_3V3_168MHZ]);
 }
 
 static void gpio_setup(void) {
@@ -46,16 +46,17 @@ int main(void) {
 	systick_setup();
 
 	led_setup(LED_FRONT);
+	led_setup(LED_REAR);
 	beacon_setup();
 	tof_setup();
 
 	while (1) {
 		if (beacon_available()) {
 			beacon_parse();
-			// led_blink(LED_FRONT);
+			led_blink(LED_REAR);
 		}
 
-		if (tof_should_stop()) {
+		if (tof_distance() <= TOF_TRIGGER_DISTANCE) {
 			led_on(LED_FRONT);
 		} else {
 			led_off(LED_FRONT);
