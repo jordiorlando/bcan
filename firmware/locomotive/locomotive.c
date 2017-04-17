@@ -9,6 +9,7 @@
 #include "led/led.h"
 #include "beacon/beacon.h"
 #include "tof/tof.h"
+#include "rom/rom.h"
 
 #define TX_PIN PA2
 #define RX_PIN PA3
