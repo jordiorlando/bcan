@@ -9,7 +9,7 @@
 #include "led/led.h"
 #include "beacon/beacon.h"
 #include "tof/tof.h"
-#include "rom/rom.h"
+#include "flash/flash.h"
 
 #define TX_PIN PA2
 #define RX_PIN PA3
@@ -102,6 +102,7 @@ int main(void) {
 	led_setup(LED_REAR);
 	beacon_setup();
 	tof_setup();
+	flash_setup();
 
 	while (1) {
 		if (beacon_available()) {
