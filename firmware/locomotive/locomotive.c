@@ -92,6 +92,11 @@ static void print_id(uint16_t id) {
 	usart_send_blocking(USART2, '\n');
 }
 
+static void blink_data(uint8_t unused) {
+	blink();
+	(void)unused;
+}
+
 int main(void) {
 	rcc_setup();
 	gpio_setup();
@@ -104,6 +109,13 @@ int main(void) {
 	tof_setup();
 	flash_setup();
 
+	flash_function_add(0, blink_data);
+	flash_reset();
+	flash_add(0x00000000);
+
+	uint32_t millis_since_op = 0;
+	uint32_t last_exec = system_millis;
+
 	while (1) {
 		if (beacon_available()) {
 			print_id(beacon_parse());
@@ -115,6 +127,13 @@ int main(void) {
 		} else {
 			led_off(LED_FRONT);
 		}
+
+		if (millis_since_op > 1000) {
+			flash_execute(0, 0, 0);
+			last_exec = system_millis;
+		}
+
+		millis_since_op = system_millis - last_exec;
 	}
 
 	return 0;
