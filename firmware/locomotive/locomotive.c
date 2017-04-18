@@ -106,13 +106,13 @@ int main(void) {
 	led_setup(LED_FRONT);
 	led_setup(LED_REAR);
 	beacon_setup();
-	tof_setup();
+	// tof_setup();
 	flash_setup();
 
 	flash_reset();
-	flash_add(0x00000000);
+	flash_add(0x00010080);
 	flash_load();
-	flash_function_add(0, blink_data);
+	flash_function_add(1, blink_data);
 
 	uint32_t millis_since_op = 0;
 	uint32_t last_exec = system_millis;
@@ -130,7 +130,7 @@ int main(void) {
 		}
 
 		if (millis_since_op > 1000) {
-			flash_execute(0, 0, 0);
+			flash_execute(1, 0, 0);
 			last_exec = system_millis;
 		}
 
