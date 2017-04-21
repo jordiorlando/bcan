@@ -4,6 +4,8 @@ int flash_num_entries;
 flash_mapping flash_mappings_list[FLASH_MAX_ENTRIES];
 flash_func flash_functions_list[FLASH_MAX_FUNCTIONS];
 
+char print_data[1000];
+
 static void flash_placeholder_func(uint8_t data){
 	(void)data;
 }
@@ -131,9 +133,13 @@ void flash_add(flash_mapping m){
 }
 
 void flash_execute(uint16_t id, uint8_t dot, uint8_t td){
-	flash_mapping mapping_id = (((int)id << 4) + ((int)(dot & 0x3) << 2) + ((int)(td & 0x3) << 0)) << 12;
+	flash_mapping mapping_id = (((uint32_t)id << 4) + ((uint32_t)(dot & 0x3) << 2) + ((uint32_t)(td & 0x3) << 0)) << 12;
+	sprintf(print_data, "mapping_id %08lx", (uint32_t)mapping_id);
+	print(print_data);
 	int i;
 	for(i = 0; i < flash_num_entries; i++){
+		sprintf(print_data, "flash_mappings_list[i] & 0xfffff000 %08lx", (uint32_t)(flash_mappings_list[i] & 0xfffff000));
+		print(print_data);
 		if(mapping_id == (flash_mappings_list[i] & 0xfffff000)){
 			int function_id = (flash_mappings_list[i] & 0x00000fc0) >> 6;
 			uint8_t function_data = flash_mappings_list[i] & 0x0000003f;

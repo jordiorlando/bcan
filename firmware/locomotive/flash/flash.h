@@ -2,6 +2,8 @@
 #define FLASH_H
 
 #include <stdlib.h>
+#include <stdio.h>
+#include "../locomotive.h"
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/spi.h>
 #include <libopencm3/stm32/gpio.h>
