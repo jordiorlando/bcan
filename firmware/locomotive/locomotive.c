@@ -92,8 +92,9 @@ static void print_id(uint16_t id) {
 	usart_send_blocking(USART2, '\n');
 }
 
-static void blink_data(uint8_t unused) {
+static void blink_and_print_data(uint8_t unused) {
 	led_blink(LED_FRONT);
+	println("I'm Blinking!!!");
 	(void)unused;
 }
 
@@ -112,7 +113,7 @@ int main(void) {
 	flash_reset();
 	flash_add(0x00010080);
 	flash_load();
-	flash_function_add(1, blink_data);
+	flash_function_add(1, blink_and_print_data);
 
 	uint32_t millis_since_op = 0;
 	uint32_t last_exec = system_millis;
