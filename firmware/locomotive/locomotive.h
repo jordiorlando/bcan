@@ -67,4 +67,8 @@ static const uint32_t ports[4] = {
 #define PORT(p) ports[p >> 4]
 #define PIN(p) (1 << (p & 0x0F))
 
+
+void print(char *str);
+void println(char *str);
+
 #endif

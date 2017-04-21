@@ -2,6 +2,7 @@
 #include <libopencm3/cm3/systick.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
+#include <libopencm3/stm32/usart.h>
 
 #include "locomotive.h"
 #include "rcc_config/rcc_config.h"
@@ -9,10 +10,14 @@
 #include "beacon/beacon.h"
 #include "tof/tof.h"
 
+#define TX_PIN PA2
+#define RX_PIN PA3
 #define TOF_TRIGGER_DISTANCE 50
+
 
 /* Number of milliseconds since reset (overflows every 49 days). */
 volatile uint32_t system_millis;
+
 
 void sys_tick_handler(void) {
 	system_millis++;
@@ -40,10 +45,57 @@ static void systick_setup(void) {
 	systick_interrupt_enable();
 }
 
+static void usart_setup(void) {
+	/* Setup GPIO pins for USART2 transmit. */
+	gpio_mode_setup(PORT(TX_PIN), GPIO_MODE_AF, GPIO_PUPD_NONE, PIN(TX_PIN));
+
+	/* Setup USART2 TX pin as alternate function. */
+	gpio_set_af(PORT(TX_PIN), GPIO_AF7, PIN(TX_PIN));
+
+	/* Enable clocks for USART2. */
+	rcc_periph_clock_enable(RCC_USART2);
+
+	/* Setup USART2 parameters. */
+	usart_set_baudrate(USART2, 38400);
+	usart_set_databits(USART2, 8);
+	usart_set_stopbits(USART2, USART_STOPBITS_1);
+	usart_set_mode(USART2, USART_MODE_TX);
+	usart_set_parity(USART2, USART_PARITY_NONE);
+	usart_set_flow_control(USART2, USART_FLOWCONTROL_NONE);
+
+	/* Finally enable the USART. */
+	usart_enable(USART2);
+}
+
+void print(char *str) {
+	uint8_t i = 0;
+	while (str[i] != '\0') {
+		usart_send_blocking(USART2, str[i]);
+		i++;
+	}
+}
+
+void println(char *str) {
+	print(str);
+	usart_send_blocking(USART2, '\n');
+}
+
+static void print_id(uint16_t id) {
+	print("0x");
+
+	for (int8_t i = 12; i >= 0; i -= 4) {
+		uint8_t digit = (id >> i) & 0x0F;
+		usart_send_blocking(USART2, digit + ((digit < 0x0a) ? 48 : 87));
+	}
+
+	usart_send_blocking(USART2, '\n');
+}
+
 int main(void) {
 	rcc_setup();
 	gpio_setup();
 	systick_setup();
+	usart_setup();
 
 	led_setup(LED_FRONT);
 	led_setup(LED_REAR);
@@ -52,7 +104,7 @@ int main(void) {
 
 	while (1) {
 		if (beacon_available()) {
-			beacon_parse();
+			print_id(beacon_parse());
 			led_blink(LED_REAR);
 		}
 
