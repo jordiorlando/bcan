@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "../locomotive.h"
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/spi.h>
@@ -20,11 +21,12 @@
 typedef uint32_t flash_mapping;
 typedef void(* flash_func)(uint8_t data);
 
+
 void flash_setup(void);
 void flash_load(void);
 void flash_function_add(int idx, flash_func f);
 void flash_reset(void);
 void flash_add(flash_mapping m);
-void flash_execute(uint16_t id, uint8_t dot, uint8_t td);
+void flash_execute(uint16_t id, uint8_t dot, uint8_t dir);
 
 #endif
