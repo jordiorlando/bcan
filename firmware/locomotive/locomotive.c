@@ -8,12 +8,94 @@
 #include "rcc_config/rcc_config.h"
 #include "led/led.h"
 #include "beacon/beacon.h"
+#include "motor/motor.h"
 #include "tof/tof.h"
 
 #define TX_PIN PA2
 #define RX_PIN PA3
+
+#define ID_0 0xca53
+#define ID_1 0xa257
+#define ID_2 0x5e72
+#define ID_3 0x3f44
+#define ID_4 0x92e0
+#define ID_5 0x463c
+#define ID_6 0x5c5d
+#define ID_7 0x0de0
+#define ID_8 0x1a32
+#define ID_9 0x547d
+
+#define DOT_FORWARD 1
+#define DOT_REVERSE 2
+#define DOT_EITHER  3
+
+#define DIR_FORWARD 1
+#define DIR_REVERSE 2
+#define DIR_EITHER  3
+
+#define INSTR_F0        0
+#define INSTR_F1        1
+#define INSTR_F2        2
+#define INSTR_F3        3
+#define INSTR_F4        4
+#define INSTR_F5        5
+#define INSTR_F6        6
+#define INSTR_F7        7
+#define INSTR_F8        8
+#define INSTR_F9        9
+#define INSTR_F10       10
+#define INSTR_F11       11
+#define INSTR_F12       12
+#define INSTR_F13       13
+#define INSTR_F14       14
+#define INSTR_F15       15
+#define INSTR_F16       16
+#define INSTR_F17       17
+#define INSTR_F18       18
+#define INSTR_F19       19
+#define INSTR_F20       20
+#define INSTR_F21       21
+#define INSTR_F22       22
+#define INSTR_F23       23
+#define INSTR_F24       24
+#define INSTR_F25       25
+#define INSTR_F26       26
+#define INSTR_F27       27
+#define INSTR_F28       28
+#define INSTR_SPEED     29
+#define INSTR_DIRECTION 30
+#define INSTR_CUSTOM    31
+
+#define DATA_REVERSE_DIR 0
+#define DATA_FORWARD_DIR 1
+#define DATA_REVERSE_DOT 2
+#define DATA_FORWARD_DOT 3
+#define DATA_CHANGE_DIR  4
+
+#define NUM_MAPPINGS 16
+
 #define TOF_TRIGGER_DISTANCE 50
 
+
+typedef struct {
+	uint16_t id : 16;
+	uint8_t dot : 2;
+	uint8_t dir : 2;
+	uint8_t instr : 5;
+	uint8_t data : 7;
+} mapping_t;
+
+const mapping_t mappings[NUM_MAPPINGS] = {
+	{
+		.id    = ID_0,
+		.dot   = DIR_EITHER,
+		.dir   = DIR_EITHER,
+		.instr = INSTR_SPEED,
+		.data  = 127
+	}
+};
+
+char print_buffer[50];
 
 /* Number of milliseconds since reset (overflows every 49 days). */
 volatile uint32_t system_millis;
@@ -80,17 +162,6 @@ void println(char *str) {
 	usart_send_blocking(USART2, '\n');
 }
 
-static void print_id(uint16_t id) {
-	print("0x");
-
-	for (int8_t i = 12; i >= 0; i -= 4) {
-		uint8_t digit = (id >> i) & 0x0F;
-		usart_send_blocking(USART2, digit + ((digit < 0x0a) ? 48 : 87));
-	}
-
-	usart_send_blocking(USART2, '\n');
-}
-
 int main(void) {
 	rcc_setup();
 	gpio_setup();
@@ -100,18 +171,110 @@ int main(void) {
 	led_setup(LED_FRONT);
 	led_setup(LED_REAR);
 	beacon_setup();
+	motor_setup();
 	tof_setup();
 
 	while (1) {
-		if (beacon_available()) {
-			print_id(beacon_parse());
-			led_blink(LED_REAR);
-		}
+		motor_update();
 
 		if (tof_distance() <= TOF_TRIGGER_DISTANCE) {
-			led_on(LED_FRONT);
+			motor_stop();
 		} else {
-			led_off(LED_FRONT);
+			motor_start();
+
+			if (beacon_available()) {
+				beacon_t beacon = beacon_parse();
+				uint8_t dot = motor_get_direction() ^ beacon.side ^ 1;
+				uint8_t dir = motor_get_direction();
+
+				sprintf(print_buffer, "0x%04x", beacon.id);
+				println(print_buffer);
+
+				/* Find all matching mappings. */
+				for (uint8_t i = 0; i < NUM_MAPPINGS; i++) {
+					if ((beacon.id == mappings[i].id) &&
+							(dot & mappings[i].dot) &&
+							(dir & mappings[i].dir)) {
+						uint8_t data = mappings[i].data;
+
+						switch (mappings[i].instr) {
+							/* Turn on LED. */
+							case INSTR_F0:
+								if (data == 0) {
+									led_on(LED_FRONT);
+								} else if (data == 1) {
+									led_on(LED_REAR);
+								}
+								break;
+							/* Turn off LED. */
+							case INSTR_F1:
+								if (data == 0) {
+									led_off(LED_FRONT);
+								} else if (data == 1) {
+									led_off(LED_REAR);
+								}
+								break;
+							/* Toggle LED. */
+							case INSTR_F2:
+								if (data == 0) {
+									led_toggle(LED_FRONT);
+								} else if (data == 1) {
+									led_toggle(LED_REAR);
+								}
+								break;
+							case INSTR_F3:
+							case INSTR_F4:
+							case INSTR_F5:
+							case INSTR_F6:
+							case INSTR_F7:
+							case INSTR_F8:
+							case INSTR_F9:
+							case INSTR_F10:
+							case INSTR_F11:
+							case INSTR_F12:
+							case INSTR_F13:
+							case INSTR_F14:
+							case INSTR_F15:
+							case INSTR_F16:
+							case INSTR_F17:
+							case INSTR_F18:
+							case INSTR_F19:
+							case INSTR_F20:
+							case INSTR_F21:
+							case INSTR_F22:
+							case INSTR_F23:
+							case INSTR_F24:
+							case INSTR_F25:
+							case INSTR_F26:
+							case INSTR_F27:
+							case INSTR_F28:
+								break;
+							case INSTR_SPEED:
+								motor_set_speed(data);
+								break;
+							case INSTR_DIRECTION:
+								if (data == DATA_REVERSE_DIR) {
+									motor_set_direction(MOTOR_REVERSE);
+								} else if (data == DATA_FORWARD_DIR) {
+									motor_set_direction(MOTOR_FORWARD);
+								} else if (((data == DATA_REVERSE_DOT) && (dot == DOT_FORWARD)) ||
+													 ((data == DATA_FORWARD_DOT) && (dot == DOT_REVERSE)) ||
+														(data == DATA_CHANGE_DIR)) {
+									motor_set_direction(dir ^ (MOTOR_FORWARD | MOTOR_REVERSE));
+								}
+								break;
+							case INSTR_CUSTOM:
+							default:
+								break;
+						}
+					}
+				}
+			}
+		}
+
+		if (system_millis % 500 == 0) {
+			sprintf(print_buffer, "Track Voltage: %d0mV", motor_vtrack());
+			println(print_buffer);
 		}
 	}
 

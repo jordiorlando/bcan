@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <libopencm3/stm32/gpio.h>
 
 typedef uint8_t pin_type;
