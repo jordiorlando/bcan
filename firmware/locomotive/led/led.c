@@ -18,7 +18,11 @@ void led_off(pin_type pin) {
 	gpio_clear(PORT(pin), PIN(pin));
 }
 
-void led_blink(pin_type pin) {
+void led_toggle(pin_type pin) {
 	/* Blink the LED. */
 	gpio_toggle(PORT(pin), PIN(pin));
+}
+
+void led_blink(pin_type pin) {
+	led_toggle(pin);
 }
