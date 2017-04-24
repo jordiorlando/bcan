@@ -545,8 +545,8 @@ Connection ~ 5600 5000
 Wire Wire Line
 	5500 5400 5500 5500
 Wire Wire Line
-	4100 3900 4100 3800
-Text Label 4100 3800 1    60   ~ 0
+	4100 3900 4100 3700
+Text Label 4100 3700 3    60   ~ 0
 R-
 $Comp
 L VCC #PWR?

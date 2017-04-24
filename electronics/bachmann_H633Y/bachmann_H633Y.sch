@@ -28,7 +28,7 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:locomotive_bachmann-cache
+LIBS:bachmann_H633Y-cache
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
@@ -246,7 +246,7 @@ T-
 Text Label 5100 5000 2    60   ~ 0
 M-
 Text Label 5100 4800 2    60   ~ 0
-L+
+Io
 Text Label 5100 4900 2    60   ~ 0
 F-
 Text Label 4400 4800 0    60   ~ 0
@@ -333,7 +333,7 @@ F 3 "" H 5700 4050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text Label 5850 3800 0    60   ~ 0
-L+
+Io
 Text Label 7100 5500 1    60   ~ 0
 T+
 Text Label 6700 5500 1    60   ~ 0
