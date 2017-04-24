@@ -12,9 +12,17 @@
 
 // #define BEACON_FAST_PARSE
 
+#define BEACON_RIGHT 1
+#define BEACON_LEFT  2
+
+typedef struct {
+  uint16_t id;
+  uint8_t  side;
+} beacon_t;
+
 
 void beacon_setup(void);
 bool beacon_available(void);
-uint16_t beacon_parse(void);
+beacon_t beacon_parse(void);
 
 #endif

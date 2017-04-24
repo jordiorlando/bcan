@@ -19,14 +19,17 @@
 #define L_CCR TIM3_CCR4
 
 
-volatile bool is_reading = false;
-volatile bool is_parsed = true;
+beacon_t beacon = {
+	.id   = 0x0000,
+	.side = 0
+};
+
+volatile bool is_reading  = false;
+volatile bool is_parsed   = true;
 volatile uint8_t received = 0;
 volatile uint16_t buffer[BUFFER_LENGTH];
-volatile uint16_t sensor = 0;
-volatile uint32_t total = 0;
-
-uint16_t beacon_id = 0x0000;
+volatile uint16_t sensor  = 0;
+volatile uint32_t total   = 0;
 
 
 void tim3_isr(void) {
@@ -154,14 +157,22 @@ bool beacon_available(void) {
 	return !is_parsed;
 }
 
-uint16_t beacon_parse(void) {
+beacon_t beacon_parse(void) {
 	if (is_parsed) {
-		return beacon_id;
+		return beacon;
 	}
 
-	uint8_t edges = received;
+	if (sensor == PIN(R_PIN)) {
+		beacon.side = BEACON_RIGHT;
+	} else if (sensor == PIN(L_PIN)) {
+		beacon.side = BEACON_LEFT;
+	} else {
+		beacon.side = 0;
+	}
+
+	uint8_t edges   = received;
 	uint8_t longest = 0;
-	uint8_t bits = 0;
+	uint8_t bits    = 0;
 	uint16_t length = 0;
 
 	for (uint8_t i = 1; i < edges; i++) {
@@ -186,7 +197,7 @@ uint16_t beacon_parse(void) {
 			/* Malformed start bit. */
 			break;
 		} else if (length % 2) {
-			beacon_id = (beacon_id << 1) | polarity;
+			beacon.id = (beacon.id << 1) | polarity;
 			bits++;
 		}
 
@@ -196,5 +207,5 @@ uint16_t beacon_parse(void) {
 	}
 
 	is_parsed = true;
-	return beacon_id;
+	return beacon;
 }
