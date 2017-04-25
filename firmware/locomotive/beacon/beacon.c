@@ -3,7 +3,7 @@
 /* Protocol specifications */
 #define BIT_PERIOD      960
 #define NUM_BITS        16
-#define BUFFER_LENGTH   ((2 * NUM_BITS) + 2)
+#define BUFFER_LENGTH   (((2 * NUM_BITS) + 2) * 2)
 #define MESSAGE_LENGTH  ((NUM_BITS + 8) * BIT_PERIOD)
 /* 1MHz */
 #define TIMER_FREQUENCY 1000000
@@ -83,14 +83,14 @@ void tim3_isr(void) {
 			buffer[received] = pulse_length | ((received % 2) << 15);
 			total += pulse_length;
 			received++;
-		}
 
-		#ifdef BEACON_FAST_PARSE
-		if ((received == BUFFER_LENGTH) || (total >= MESSAGE_LENGTH)) {
-		#else
-		if (received == BUFFER_LENGTH) {
-		#endif
-			is_parsed = false;
+			#ifdef BEACON_FAST_PARSE
+			if ((received == BUFFER_LENGTH) || (total >= MESSAGE_LENGTH)) {
+			#else
+			if (received == BUFFER_LENGTH) {
+				#endif
+				is_parsed = false;
+			}
 		}
 	}
 }
@@ -176,16 +176,17 @@ beacon_t beacon_parse(void) {
 	uint16_t length = 0;
 
 	for (uint8_t i = 1; i < edges; i++) {
-		if (buffer[i] > buffer[longest]) {
+		if (!(buffer[i] >> 15) && ((buffer[i] & ~(1 << 15)) > (BIT_PERIOD * 3))) {
 			longest = i;
 			break;
 		}
 	}
 
 	for (uint8_t i = 0; i < edges; i++) {
-		uint16_t pulse = buffer[(longest + i) % edges];
+		uint16_t pulse = buffer[(longest + i + 1) % edges];
 		uint8_t polarity = pulse >> 15;
 		pulse &= ~(1 << 15);
+		pulse >>= 1;
 
 		/* Round pulse length to the nearest multiple of BIT_PERIOD/2. */
 		pulse += (BIT_PERIOD / 4);
