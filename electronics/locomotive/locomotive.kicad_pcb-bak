@@ -13,6 +13,13 @@
   )
 
   (page A4)
+  (title_block
+    (title Locomotive)
+    (date 2017-03-30)
+    (rev 1.0)
+    (company "ECE 445")
+  )
+
   (layers
     (0 F.Cu signal)
     (31 B.Cu signal)
@@ -87,7 +94,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory gerbers))
+      (outputdirectory images))
   )
 
   (net 0 "")
