@@ -144,7 +144,7 @@
 \doublespacing
 
 % put the title of your project here. DO NOT include the brackets.
-\thetitle{Beacon-Controlled Autonomous Network for Trains (BCAN’T)}
+\thetitle{Beacon-Controlled Autonomous Network for Trains (BCAN'T)}
 
 % put your names here. seperate by \\. DO NOT include the brackets.
 \theauthor{
@@ -173,7 +173,7 @@ Project No. 5
 
 % put the abstract here
 \begin{abstract}
-BCAN’T is a system for model trains that consists of infrared beacons and a laser time-of-flight sensor in order to enable true “set and go” operation. Over the course of the project we developed the beacon reading system and it demonstrated it works, as well as a complete control system on the locomotive that interfaces the beacon and time-of-flight data to control to motor and other peripherals. Unfortunately, due to last minute hardware failures, we were unable to integrate all the components onto a locomotive, but most of the components were demonstrated to work on their own.
+BCAN'T is a system for model trains that consists of infrared beacons and a laser time-of-flight sensor in order to enable true “set and go” operation. Over the course of the project we developed the beacon reading system and it demonstrated it works, as well as a complete control system on the locomotive that interfaces the beacon and time-of-flight data to control to motor and other peripherals. Unfortunately, due to last minute hardware failures, we were unable to integrate all the components onto a locomotive, but most of the components were demonstrated to work on their own.
 \abstractsetting % do not delete this line
 \end{abstract}
 
@@ -191,49 +191,49 @@ Our solution is to give each locomotive the ability to respond to the track on i
 
 \subsection{High-Level Requirements}
 \begin{itemize}
-\item Must be able to operate indefinitely on existing methods of track power, both analog (DC) and bipolar Digital Command Control (DCC).
-\item Must be able to detect oncoming obstacles on the track and stop to avoid derailment or damage.
-\item Must be able to read customizable speed limit beacons that are powered by the tracks and adjust its speed accordingly.
+	\item Must be able to operate indefinitely on existing methods of track power, both analog (DC) and bipolar Digital Command Control (DCC).
+	\item Must be able to detect oncoming obstacles on the track and stop to avoid derailment or damage.
+	\item Must be able to read customizable speed limit beacons that are powered by the tracks and adjust its speed accordingly.
 \end{itemize}
 
 \clearpage
 
 \section{Design}
-Our solution consists of two independent systems: the beacon boards and the locomotive controller. The beacons are small standalone boards on the track that continuously broadcast a unique ID that is read as the train passes over. The locomotive controller consists of three PCB’s on the train and is responsible for reading beacons, identifying obstacles, and controlling the motor. The block diagram is shown in Figure 1.
+Our solution consists of two independent systems: the beacon boards and the locomotive controller. The beacons are small standalone boards on the track that continuously broadcast a unique ID that is read as the train passes over. The locomotive controller consists of three PCB's on the train and is responsible for reading beacons, identifying obstacles, and controlling the motor. The block diagram is shown in Figure 1.
 
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=36em]{img/block_diagram.png}
-\figcap{Block Diagram.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=36em]{img/block_diagram.png}
+		\figcap{Block Diagram.}
+	\end{center}
 \end{figure}
 
 \subsection{Beacon}
-The beacon is small board that sits between two track ties as shown in Figure 2. The image on the left shows the placement of a beacon on the track, and the image on the right shows three individual beacons with their ID labels. Its function is to broadcast a unique ID to the IR receiver board on the locomotive. Each ID is mapped to a specific function that can be programmed on the locomotive control board. A bridge rectifier and a voltage regulator are used to provide 2.8V power to the microcontroller, LED driver, and IR LED. The microcontroller controls the IR LED to continuously broadcast the board’s ID for the IR receiver on the locomotive board to read.
+The beacon is small board that sits between two track ties as shown in Figure 2. The image on the left shows the placement of a beacon on the track, and the image on the right shows three individual beacons with their ID labels. Its function is to broadcast a unique ID to the IR receiver board on the locomotive. Each ID is mapped to a specific function that can be programmed on the locomotive control board. A bridge rectifier and a voltage regulator are used to provide 2.8V power to the microcontroller, LED driver, and IR LED. The microcontroller controls the IR LED to continuously broadcast the board's ID for the IR receiver on the locomotive board to read.
 
 \begin{figure}[H]
-\begin{center}
-\includegraphics[trim={80 70 90 80},clip,height=18em]{img/beacon_track.png}
-\includegraphics[trim={800 400 800 600},clip,height=18em]{img/beacon_boards.jpg}
-\figcap{Beacon Boards.}
-\end{center}
+	\begin{center}
+		\includegraphics[trim={80 70 90 80},clip,height=18em]{img/beacon_track.png}
+		\includegraphics[trim={800 400 800 600},clip,height=18em]{img/beacon_boards.jpg}
+		\figcap{Beacon Boards.}
+	\end{center}
 \end{figure}
 
 \subsubsection{Schematic}
 The schematics for the beacon board IR LED and power circuits are shown in Figure 3 and Figure 4, respectively. The shunt resistor R5 is used to create a clean 38kHz modulated signal since the LED is unable to switch fast enough. The calculations for R2 and R4 are shown in Calculations 1 and 2 in Appendix B.
 
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=15em]{img/beacon_led.png}
-\figcap{Beacon IR LED Circuit.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=15em]{img/beacon_led.png}
+		\figcap{Beacon IR LED Circuit.}
+	\end{center}
 \end{figure}
 
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=12em]{img/beacon_power.png}
-\figcap{Beacon Power Circuit.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=12em]{img/beacon_power.png}
+		\figcap{Beacon Power Circuit.}
+	\end{center}
 \end{figure}
 
 \subsubsection{Bridge Rectifier}
@@ -245,7 +245,7 @@ A linear voltage regulator takes an input from the rectified rail power and brin
 The TPS709 linear voltage regulator data sheet specifies a minimum input voltage of 2.7V\cite{TPS709}. Testing showed that an input voltage of 3.5V would produce an output voltage of 2.63V, while input voltages lower than 3.5V would produce an output voltage that is below our requirements. Therefore, a input voltage of 3.5V would be the minimum threshold for our project to function properly.
 
 \subsubsection{Microcontroller}
-The microcontroller used is an ATtiny45 8-bit AVR processor. It uses a single GPIO pin to control the LED driver circuit and continuously broadcast the board’s unique ID using the IR protocol.
+The microcontroller used is an ATtiny45 8-bit AVR processor. It uses a single GPIO pin to control the LED driver circuit and continuously broadcast the board's unique ID using the IR protocol.
 
 \subsubsection{LED Driver}
 The LED driver circuit consists of an N-channel MOSFET, a gate resistor, and a pull down resistor. The MOSFET conducts current when the I/O pin from the microcontroller is set to high. The gate resistor is used to prevent damage due to overcurrent to the microcontroller and the pull down resistor is used to ensure the MOSFET is turned off when the voltage at the gate is left floating.
@@ -266,10 +266,10 @@ Other designs were considered for the locomotive power circuit. A switching circ
 
 \subsubsection{Schematic}
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=15em]{img/locomotive_power.png}
-\figcap{Locomotive Power Schematic.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=15em]{img/locomotive_power.png}
+		\figcap{Locomotive Power Schematic.}
+	\end{center}
 \end{figure}
 
 \subsubsection{Bridge Rectifier}
@@ -289,10 +289,10 @@ The locomotive control unit consists of a microcontroller and a USB data connect
 The main part of the control circuit is the STM32F4 microcontroller. It is connected to a M95512-RDW6TP EEPROM for storage of the beacon mappings. The control schematic is shown in Figure 6.
 
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=18em]{img/locomotive_control.png}
-\figcap{Locomotive Control Schematic.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=18em]{img/locomotive_control.png}
+		\figcap{Locomotive Control Schematic.}
+	\end{center}
 \end{figure}
 
 \subsubsection{Microcontroller}
@@ -302,13 +302,13 @@ The microcontroller used is an STM32F405 32-bit ARM processor. It communicates w
 An EEPROM flash chip is used to store the beacon mappings. It communicates with the microcontroller over SPI. EEPROM was chosen since we can address individual bytes, which makes performing binary search through the dataset for the beacon mappings more efficient.
 
 \subsubsection{Voltage Scaler}
-The voltage scaler circuit originally included an operational amplifier buffer to improve the accuracy of the voltage readings. However, we were unable to find an operation amplifier that could be powered by a 2.8V source, so errors were corrected in software instead. The voltage scaler circuit consists of a resistive voltage divider, shown in Figure 7, that scales the rectified rail voltage down to a lower voltage that can be read by the microcontroller’s ADC. The rectified rail voltage ranges from 0-16V and the microcontroller ADC can read voltages from 0-2.8V. Two resistors divide the voltage to output a range of 0-2.8V, which will give 4096 different values for a 12-bit precision ADC. The calculations using Equation 3 of the voltage divider's resistor values are shown in Calculation 5 in appendix B.
+The voltage scaler circuit originally included an operational amplifier buffer to improve the accuracy of the voltage readings. However, we were unable to find an operation amplifier that could be powered by a 2.8V source, so errors were corrected in software instead. The voltage scaler circuit consists of a resistive voltage divider, shown in Figure 7, that scales the rectified rail voltage down to a lower voltage that can be read by the microcontroller's ADC. The rectified rail voltage ranges from 0-16V and the microcontroller ADC can read voltages from 0-2.8V. Two resistors divide the voltage to output a range of 0-2.8V, which will give 4096 different values for a 12-bit precision ADC. The calculations using Equation 3 of the voltage divider's resistor values are shown in Calculation 5 in appendix B.
 
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=12em]{img/voltage_divider.png}
-\figcap{Voltage Divider Circuit.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=12em]{img/voltage_divider.png}
+		\figcap{Voltage Divider Circuit.}
+	\end{center}
 \end{figure}
 
 \begin{equation}
@@ -322,10 +322,10 @@ In order to drive the MOSFETs in the H-bridge, optoisolators were also considere
 
 \subsubsection{Schematic}
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=15em]{img/locomotive_drivetrain.png}
-\figcap{Locomotive Drivetrain Schematic.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=15em]{img/locomotive_drivetrain.png}
+		\figcap{Locomotive Drivetrain Schematic.}
+	\end{center}
 \end{figure}
 
 \subsubsection{Motor Controller}
@@ -341,10 +341,10 @@ The beacon reader consists of two IR receivers mounted underneath the train on e
 The IR protocol uses 38kHz modulation present in many televisions and other consumer devices. We chose this frequency because sensors for it are widely available. Our protocol uses Manchester encoding according to the G.E. Thomas convention with a bit period of 960s and data length of 16 bits\cite{Manchester}. The timing diagram for the protocol is shown in Figure 9.
 
 \begin{figure}[H]
-\begin{center}
-\includegraphics[height=9em]{img/ir_protocol.png}
-\figcap{IR Protocol Timing Diagram.}
-\end{center}
+	\begin{center}
+		\includegraphics[height=9em]{img/ir_protocol.png}
+		\figcap{IR Protocol Timing Diagram.}
+	\end{center}
 \end{figure}
 
 \subsection{Beacon Firmware}
@@ -377,10 +377,12 @@ The flowchart for the locomotive operation is is shown in Figure 10.
 \end{figure}
 
 \subsection{PC Software}
-
-\subsubsection{Beacon Configurator}
-Figure 11 shows the web interface (hosted online \href{http://jordi.codes/bcan}{here}
-) to program the beacons. Once specifying the ID, the user can select the instances where the mapping applies and the action the beacon corresponds to.
+Figure 11 shows the web interface (hosted online \href{http://jordi.codes/bcan}{here}) to program the beacons. Once specifying the ID, the user can select the instances where the mapping applies and the action the beacon corresponds to.
+\begin{itemize}
+	\item Allows user to add any number of beacon mappings
+	\item Each mapping consists of a beacon ID, description, direction of travel, direction of drain, function, and additional parameters for that function
+	\item Clicking “Save” downloads a file that can be copied to the USB mass storage device to program the mappings
+\end{itemize}
 
 \begin{figure}[H]
 	\begin{center}
@@ -388,13 +390,6 @@ Figure 11 shows the web interface (hosted online \href{http://jordi.codes/bcan}{
 		\figcap{Beacon Configurator Website.}
 	\end{center}
 \end{figure}
-
-\subsubsection{Feature List}
-\begin{itemize}
-	\item Allows user to add any number of beacon mappings
-	\item Each mapping consists of a beacon ID, description, direction of travel, direction of drain, function, and additional parameters for that function
-	\item Clicking “Save” downloads a file that can be copied to the USB mass storage device to program the mappings
-\end{itemize}
 
 \clearpage
 
@@ -439,7 +434,7 @@ While our project definitely had some issues that kept it from being a complete 
 We still have a few lingering questions about our project, namely the nature of the eleventh hour failure we experienced. We had soldered the locomotive board and it had been working for two weeks until a short developed two days before the final demo. After thinking we had identified the cause and replaced the suspect component, another short, this time at the output of the 2.8V voltage regulator appeared. This was approximately 18 hours before our final demo and the only solution we saw was to solder together another board. Unfortunately, even though this board had never even been powered, the short was still present. Even after thoroughly examining the board under a microscope, the only theory we have for the second board being faulty is a faulty component. At this point, even though we were able to demonstrate the individual aspects of the project worked, integrating them was not successful.
 % \vspace{0.2in}
 
-\subsection{Ethical considerations}
+\subsection{Ethical Considerations}
 There are two potential safety concerns with our project, however we believe they are both within the acceptable tolerances for a general consumer product. The first of these is that the rails of the train track are electrically charged so one could potentially shock themselves. However, we are not changing this characteristic in our design and therefore are not creating any additional safety hazards. This is a well understood risk of model trains so responsible usage dictates they should be kept out of reach of small children or pets. The second is that we are using a time-of-flight sensor that uses a laser. The laser used is Class 1, which means that it is safe for use under normal conditions and while operating within the manufacturer's specifications\cite{VL6180X}.\par
 
 In accordance with the IEEE code of ethics, we endeavored to take on technical tasks we feel we are qualified for and seek advice from our mentors for the skills we lack. We sought feedback and criticism for our work and continuously worked to correct our mistakes. We strove for honesty and properly credited individual contributions to our project. Most importantly, we supported and encouraged each other to follow this code of ethics.
@@ -504,11 +499,7 @@ The software, firmware, and schematics for our project are fully open source and
 			& \\ \hline
 
 	\end{longtable}
-\end{center}
-\end{singlespacing}
 
-\begin{singlespacing}
-\begin{center}
 \begin{longtable}{|p{18em}|p{18em}|p{5em}|}
 \tablecap{Locomotive Power Requirements and Verifications}
 		\\
@@ -542,11 +533,7 @@ The software, firmware, and schematics for our project are fully open source and
 			& \\ \hline
 
 	\end{longtable}
-\end{center}
-\end{singlespacing}
 
-\begin{singlespacing}
-\begin{center}
 \begin{longtable}{|p{18em}|p{18em}|p{5em}|}
 \tablecap{Locomotive Control Requirements and Verifications}
 		\\
@@ -580,7 +567,7 @@ The software, firmware, and schematics for our project are fully open source and
 			& \\ \hline
 
 			\begin{compactenum}
-				\item Must be able to scale a voltage range of 0-16V down to 0-2.8V and be read by the microcontroller’s ADC with at least 10 bit precision.
+				\item Must be able to scale a voltage range of 0-16V down to 0-2.8V and be read by the microcontroller's ADC with at least 10 bit precision.
 			\end{compactenum}
 			&
 			\begin{compactenum}
@@ -589,11 +576,7 @@ The software, firmware, and schematics for our project are fully open source and
 			& \\ \hline
 
 	\end{longtable}
-\end{center}
-\end{singlespacing}
 
-\begin{singlespacing}
-\begin{center}
 \begin{longtable}{|p{18em}|p{18em}|p{5em}|}
 \tablecap{Locomotive Drivetrain Requirements and Verifications}
 		\\
@@ -618,11 +601,7 @@ The software, firmware, and schematics for our project are fully open source and
 			& \\ \hline
 
 	\end{longtable}
-\end{center}
-\end{singlespacing}
 
-\begin{singlespacing}
-\begin{center}
 \begin{longtable}{|p{18em}|p{18em}|p{5em}|}
 \tablecap{Obstacle Detector Requirements and Verifications}
 		\\
@@ -647,11 +626,7 @@ The software, firmware, and schematics for our project are fully open source and
 			& \\ \hline
 
 	\end{longtable}
-\end{center}
-\end{singlespacing}
 
-\begin{singlespacing}
-\begin{center}
 \begin{longtable}{|p{18em}|p{18em}|p{5em}|}
 \tablecap{Beacon Reader Requirements and Verifications}
 		\\
@@ -671,7 +646,7 @@ The software, firmware, and schematics for our project are fully open source and
 			\end{compactenum}
 			&
 			\begin{compactenum}
-				\item Connect a beacon to rail power. Write and flash a test program that will display over the PC serial connection the value read from the IR receiver. Verify that the value read matches the beacon’s ID.
+				\item Connect a beacon to rail power. Write and flash a test program that will display over the PC serial connection the value read from the IR receiver. Verify that the value read matches the beacon's ID.
 			\end{compactenum}
 			& \\ \hline
 
@@ -745,21 +720,385 @@ $R_2=2.8k\Omega$
 
 \section{Pinouts}
 
+\begin{singlespacing}
+\begin{center}
+\begin{longtable}{|r|l|c|c|l|}
+\tablecap{STM32F405RGT6 Pinouts}
+		\\
+		\hline \multicolumn{1}{|p{2em}|}{\centpcol Pin} &
+		\multicolumn{1}{p{4em}|}{\centpcol Name} &
+		\multicolumn{1}{p{4em}|}{\centpcol Type} &
+		\multicolumn{1}{p{4em}|}{\centpcol Structure} &
+		\multicolumn{1}{p{8em}|}{\centpcol Connected}\\ \hline
+		\endfirsthead
+
+		\multicolumn{5}{c}
+		{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+		\hline \multicolumn{1}{|p{2em}|}{\centpcol Pin} &
+		\multicolumn{1}{p{4em}|}{\centpcol Name} &
+		\multicolumn{1}{p{4em}|}{\centpcol Type} &
+		\multicolumn{1}{p{4em}|}{\centpcol Structure} &
+		\multicolumn{1}{p{8em}|}{\centpcol Connected}\\ \hline
+		\endhead
+
+		\hline \multicolumn{5}{|r|}{{Continued on next page}} \\ \hline
+		\endfoot
+		\endlastfoot
+			1 & VBAT & S & FT & VBAT \\ \hline
+
+			2 & PC13 & IO & FT & DCC IN \\ \hline
+
+			3 & PC14 & IO & FT & RTC \\ \hline
+
+			4 & PC15 & IO & FT & RTC \\ \hline
+
+			5 & PH0 & IO & FT & crystal \\ \hline
+
+			6 & PH1 & IO & FT & crystal \\ \hline
+
+			7 & NRST & IO & RST & JTAG\_RST \\ \hline
+
+			8 & PC0 & IO & FT & \\ \hline
+
+			9 & PC1 & IO & FT & \\ \hline
+
+			10 & PC2 & IO & FT & TRACK V \\ \hline
+
+			11 & PC3 & IO & FT & MOTOR EMF \\ \hline
+
+			12 & VSSA & S & & GND \\ \hline
+
+			13 & VDDA & S & & 2V8 \\ \hline
+
+			14 & PA0 & IO & FT & \\ \hline
+
+			15 & PA1 & IO & FT & \\ \hline
+
+			16 & PA2 & IO & FT & \\ \hline
+
+			17 & PA3 & IO & FT & \\ \hline
+
+			18 & VSS & S & & GND \\ \hline
+
+			19 & VDD & S & & 2V8 \\ \hline
+
+			20 & PA4 & IO & TTa & \\ \hline
+
+			21 & PA5 & IO & TTa & \\ \hline
+
+			22 & PA6 & IO & FT & Rear LED \\ \hline
+
+			23 & PA7 & IO & FT & Front LED \\ \hline
+
+			24 & PC4 & IO & FT & \\ \hline
+
+			25 & PC5 & IO & FT & \\ \hline
+
+			26 & PB0 & IO & FT & IR RCVR R \\ \hline
+
+			27 & PB1 & IO & FT & IR RCVR L \\ \hline
+
+			28 & PB2 & IO & FT & BOOT1 10k PD \\ \hline
+
+			29 & PB10 & IO & FT & TOF SCL \\ \hline
+
+			30 & PB11 & IO & FT & TOF SDA \\ \hline
+
+			31 & VCAP1 & S & & 2u2 cap \\ \hline
+
+			32 & VDD & S & & 2V8 \\ \hline
+
+			33 & PB12 & IO & FT & FLASH ~S \\ \hline
+
+			34 & PB13 & IO & FT & FLASH C \\ \hline
+
+			35 & PB14 & IO & FT & FLASH Q \\ \hline
+
+			36 & PB15 & IO & FT & FLASH D \\ \hline
+
+			37 & PC6 & IO & FT & \\ \hline
+
+			38 & PC7 & IO & FT & \\ \hline
+
+			39 & PC8 & IO & FT & \\ \hline
+
+			40 & PC9 & IO & FT & \\ \hline
+
+			41 & PA8 & IO & FT & \\ \hline
+
+			42 & PA9 & IO & FT & USB\_VBUS \\ \hline
+
+			43 & PA10 & IO & FT & USB\_ID \\ \hline
+
+			44 & PA11 & IO & FT & USB\_D- \\ \hline
+
+			45 & PA12 & IO & FT & USB\_D+ \\ \hline
+
+			46 & PA13 & IO & FT & JTAG\_TMS \\ \hline
+
+			47 & VCAP2 & S & & 2u2 cap \\ \hline
+
+			48 & VDD & S & & 2V8 \\ \hline
+
+			49 & PA14 & IO & FT & JTAG\_TCK \\ \hline
+
+			50 & PA15 & IO & FT & JTAG\_TDI \\ \hline
+
+			51 & PC10 & IO & FT & \\ \hline
+
+			52 & PC11 & IO & FT & \\ \hline
+
+			53 & PC12 & IO & FT & \\ \hline
+
+			54 & PD2 & IO & FT & \\ \hline
+
+			55 & PB3 & IO & FT & JTAG\_TDO \\ \hline
+
+			56 & PB4 & IO & FT & \\ \hline
+
+			57 & PB5 & IO & FT & \\ \hline
+
+			58 & PB6 & IO & FT & \\ \hline
+
+			59 & PB7 & IO & FT & \\ \hline
+
+			60 & BOOT0 & I & B & BOOT0 10k PD \\ \hline
+
+			61 & PB8 & IO & FT & MOTOR A \\ \hline
+
+			62 & PB9 & IO & FT & MOTOR B \\ \hline
+
+			63 & VSS & S & & GND \\ \hline
+
+			64 & VDD & S & & 2V8 \\ \hline
+
+	\end{longtable}
+\end{center}
+\end{singlespacing}
+
 \clearpage
 
-\section{Software}
+\section{Bill Of Materials}
 
-\clearpage
+\begin{singlespacing}
+\begin{center}
+\begin{longtable}{|l|l|l|c|l|c|r|r|}
+\tablecap{Beacon BOM}
+		\\
+		\hline \multicolumn{1}{|p{6em}|}{\centpcol Description} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endfirsthead
 
-\section{Cost}
+		\multicolumn{8}{c}
+		{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+		\hline \multicolumn{1}{|p{6em}|}{\centpcol Description} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endhead
 
-\subsection{Beacon BOM}
+		\hline \multicolumn{8}{|r|}{{Continued on next page}} \\ \hline
+		\endfoot
+		\endlastfoot
+			ATtiny45 & \href{http://www.digikey.com/product-detail/en/microchip-technology/ATTINY45-20XUR/ATTINY45-20XURCT-ND/2774364}{ATTINY45-20XUR} & MCU & & TSSOP-8 & 1 & 1.19 & 1.19 \\ \hline
 
-\subsection{Locomotive BOM}
+			RST pull-up, gate pull-down & \href{http://www.digikey.com/product-detail/en/yageo/RC0603FR-0710KL/311-10.0KHRCT-ND/729827}{RC0603FR-0710KL} & R & 10k & 0603 & 2 & 0.10 & 0.20 \\ \hline
 
-\subsection{Obstacle Detector BOM}
+			Gate resistor & \href{http://www.digikey.com/product-detail/en/yageo/RC0603FR-07100RL/311-100HRCT-ND/729835}{RC0603FR-07100RL} & R & 100 & 0603 & 1 & 0.10 & 0.10 \\ \hline
 
-\subsection{Beacon Reader BOM}
+			LED limiting & \href{http://www.digikey.com/product-detail/en/yageo/RC0603FR-0747RL/311-47.0HRCT-ND/730199}{RC0603FR-0747RL} & R & 47 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			IR LED & \href{http://www.digikey.com/product-detail/en/everlight-electronics-co-ltd/IR19-21C-TR8/1080-1354-1-ND/2676088}{IR19-21C/TR8} & LED & & 0603 & 1 & 0.50 & 0.50 \\ \hline
+
+			N MOSFET & \href{http://www.digikey.com/product-detail/en/panasonic-electronic-components/2N7002E/2N7002ECT-ND/4357001}{2N7002E} & NFET & & SOT-23-3 & 1 & 0.23 & 0.23 \\ \hline
+
+			Full bridge rectifier & \href{http://www.digikey.com/product-detail/en/infineon-technologies/BAS-4002A-RPP-E6327/BAS4002ARPPE6327INCT-ND/2023145}{BAS4002A-RPP} & D & & SOT143-4 & 1 & 0.41 & 0.41 \\ \hline
+
+			2.8V LDO voltage regulator & \href{http://www.digikey.com/product-detail/en/texas-instruments/TPS70928DBVT/296-39473-1-ND/5143421}{TPS70928DVB} & VREG & 2v8 & SOT-23-5 & 1 & 1.37 & 1.37 \\ \hline
+
+			Input decoupling cap & \href{http://www.digikey.com/product-detail/en/taiyo-yuden/UMK107BJ105KA-T/587-2400-1-ND/2179013}{UMK107BJ105KA-T} & C & 1u & 0603 & 1 & 0.16 & 0.16 \\ \hline
+
+			Output decoupling cap & \href{http://www.digikey.com/product-detail/en/murata-electronics-north-america/GRM188R60J226MEA0D/490-7611-1-ND/4280544}{GRM188R60J226MEA0D} & C & 22u & 0603 & 1 & 0.27 & 0.27 \\ \hline
+
+	\end{longtable}
+
+\begin{longtable}{|l|l|l|c|l|c|r|r|}
+\tablecap{Locomotive BOM}
+		\\
+		\hline \multicolumn{1}{|p{4em}|}{\centpcol Reference} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endfirsthead
+
+		\multicolumn{8}{c}
+		{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+		\hline \multicolumn{1}{|p{4em}|}{\centpcol Reference} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endhead
+
+		\hline \multicolumn{8}{|r|}{{Continued on next page}} \\ \hline
+		\endfoot
+		\endlastfoot
+			U1 & STM32F405RGT6 & MCU & & LQFP-64 & 1 & 10.58 & 10.58 \\ \hline
+
+			U2 & M95512-RDW6TP & EEPROM & 512K & TSSOP-8 & 1 & 1.00 & 1.00 \\ \hline
+
+			U5 & SPX3819M5-L/TR & LDO VREG & 500mA & SOT-23-5 & 1 & 0.72 & 0.72 \\ \hline
+
+			U7 & TLP293 & Optoisolator & & SOIC-4 & 1 & 0.52 & 0.52 \\ \hline
+
+			Q1, Q2 & MMBT2222A & NPN BJT & & SOT-23-3 & 2 & 0.20 & 0.40 \\ \hline
+
+			Q3, Q4 & DMG6601LVT-7 & PFET+NFET & 1.28A & TSOT-23-6 & 2 & 0.39 & 0.78 \\ \hline
+
+			D1 & CDBHM240L-HF & Rectifier & 2A & TO-269AA & 1 & 0.84 & 0.84 \\ \hline
+
+			D2 & CUS08F30 & Diode & & SOD-323 & 1 & 0.36 & 0.36 \\ \hline
+
+			D3 & 1N4148X-TP & Diode & & SOD-523 & 1 & 0.14 & 0.14 \\ \hline
+
+			R17, R18 & 3522100RJT & Resistor & 100 & 2512 & 2 & 0.72 & 1.44 \\ \hline
+
+			R15, R16 & RC0603JR-071KL & Resistor & 1k & 0603 & 2 & 0.10 & 0.20 \\ \hline
+
+			R19 & RC0603JR-071K5L & Resistor & 1k5 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			R5 & RC0603FR-072K8L & Resistor & 2k8 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			R8, R9 & RC0603JR-074K7L & Resistor & 4k7 & 0603 & 2 & 0.10 & 0.20 \\ \hline
+
+			R1-R3, R10-R12, R20 & RC0603JR-0710KL & Resistor & 10k & 0603 & 7 & 0.10 & 0.70 \\ \hline
+
+			R4 & RC0603FR-0713K3L & Resistor & 13k3 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			R14 & RC0603FR-0726K1L & Resistor & 26k1 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			R13 & RC0603FR-0733K2L & Resistor & 33k2 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			C4, C5 & CL10C060CB8NNNC & Capacitor & 6p & 0603 & 2 & 0.10 & 0.20 \\ \hline
+
+			C3, C7-C11 & GRM188R71C104KA01D & Capacitor & 100n & 0603 & 6 & 0.10 & 0.60 \\ \hline
+
+			C12 & GRM188R61E105KA12D & Capacitor & 1u & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			C1, C2, C13 & CL10A225KP8NNNC & Capacitor & 2u2 & 0603 & 3 & 0.12 & 0.36 \\ \hline
+
+			C6 & CL10B475KQ8NQNC & Capacitor & 4u7 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			L1 & MI0603J601R-10 & Ferrite Bead & 600 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			Y1 & CX3225SB16000D0GZJC1 & Crystal & 16MHz & SMD-4 & 1 & 0.66 & 0.66 \\ \hline
+
+			J3 & FTSH-105-01-F-DV-K & Connector & & SMD-10 & 1 & 2.90 & 2.90 \\ \hline
+
+			J4 & 10118192-0001LF & Connector & & SMD-5 & 1 & 0.46 & 0.46 \\ \hline
+
+			J7 & 450-80-272-00-106101 & Connector & & SMD-8 & 1 & 0.76 & 0.76 \\ \hline
+
+			J8, J9 & BM04B-GHS-TBT & Connector & & JST-GH-4 & 2 & 0.44 & 0.88 \\ \hline
+
+	\end{longtable}
+
+\begin{longtable}{|l|l|l|c|l|c|r|r|}
+\tablecap{Obstacle Detector BOM}
+		\\
+		\hline \multicolumn{1}{|p{4em}|}{\centpcol Reference} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endfirsthead
+
+		\multicolumn{8}{c}
+		{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+		\hline \multicolumn{1}{|p{4em}|}{\centpcol Reference} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endhead
+
+		\hline \multicolumn{8}{|r|}{{Continued on next page}} \\ \hline
+		\endfoot
+		\endlastfoot
+			U1 & \href{http://www.digikey.com/product-detail/en/stmicroelectronics/VL6180XV0NR-1/497-14702-1-ND/4854910}{VL6180XV0NR/1} & Sensor & & SMD-12 & 1 & 4.91 & 4.91 \\ \hline
+
+			R1, R2 & \href{https://www.digikey.com/product-detail/en/yageo/RC0603JR-0747KL/311-47KGRCT-ND/729741}{RC0603JR-0747KL} & Resistor & 47k & 0603 & 2 & 0.10 & 0.20 \\ \hline
+
+			C1 & \href{https://www.digikey.com/product-detail/en/murata-electronics-north-america/GRM188R71C104KA01D/490-1532-1-ND/587771}{GRM188R71C104KA01D} & Capacitor & 100n & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			C2 & \href{http://www.digikey.com/product-detail/en/samsung-electro-mechanics-america-inc/CL10B475KQ8NQNC/1276-2087-1-ND/3890173}{CL10B475KQ8NQNC} & Capacitor & 4u7 & 0603 & 1 & 0.10 & 0.10 \\ \hline
+
+			J1 & \href{https://www.digikey.com/product-detail/en/jst-sales-america-inc/BM04B-GHS-TBT(LF)(SN)(N)/455-1580-1-ND/807848}{BM04B-GHS-TBT} & Connector & 4 & JST-GH & 1 & 0.44 & 0.44 \\ \hline
+
+	\end{longtable}
+
+\begin{longtable}{|l|l|l|c|l|c|r|r|}
+\tablecap{Beacon Reader BOM}
+		\\
+		\hline \multicolumn{1}{|p{4em}|}{\centpcol Reference} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endfirsthead
+
+		\multicolumn{8}{c}
+		{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+		\hline \multicolumn{1}{|p{4em}|}{\centpcol Reference} &
+		\multicolumn{1}{p{8em}|}{\centpcol Part} &
+		\multicolumn{1}{p{3em}|}{\centpcol Type} &
+		\multicolumn{1}{p{2em}|}{\centpcol Value} &
+		\multicolumn{1}{p{4em}|}{\centpcol Package} &
+		\multicolumn{1}{p{2em}|}{\centpcol Qty} &
+		\multicolumn{1}{p{2em}|}{\centpcol Unit (\$)} &
+		\multicolumn{1}{p{2em}|}{\centpcol Total (\$)}\\ \hline
+		\endhead
+
+		\hline \multicolumn{8}{|r|}{{Continued on next page}} \\ \hline
+		\endfoot
+		\endlastfoot
+			U1, U2 & \href{http://www.digikey.com/product-detail/en/vishay-semiconductor-opto-division/TSOP57238TT1/TSOP57238TT1CT-ND/3175136}{TSOP57238TT1} & Sensor & 38kHz & SMD & 2 & 2.23 & 4.46 \\ \hline
+
+			J1 & \href{https://www.digikey.com/product-detail/en/jst-sales-america-inc/BM04B-GHS-TBT(LF)(SN)(N)/455-1580-1-ND/807848}{BM04B-GHS-TBT} & Connector & 4 & JST-GH & 1 & 0.44 & 0.44 \\ \hline
+
+	\end{longtable}
+\end{center}
+\end{singlespacing}
+
+\begin{center}
+All source files, including the source for this document, are hosted on GitHub at \href{https://github.com/0xdec/bcan}{0xdec/bcan}.
+\end{center}
 
 \end{appendix}
 
